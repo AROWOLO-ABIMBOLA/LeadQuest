@@ -12,17 +12,20 @@ Developed by Dr. Arowolo Ayoola.
 - In His Steps (6 chapters)
 
 **Bible Reading** (Bible in Basic English)
-- Genesis to 2 Kings: 12 books, 235 illustrated story episodes, every chapter readable
-- Puzzles, memory verses, 105 character cards
+- All 66 books open for chapter-by-chapter reading, read aloud
+- Genesis to Revelation: 616 illustrated story episodes across all 66 books, with puzzles, memory verses, 'Pointing to Jesus' and 'Promise kept' insights, and 224 character cards
 - Jacob's twelve blessings, and a personal closing prayer for every book
 
-Works offline once opened, and can be installed on phones and computers.
+Works offline and can be installed on phones and computers.
 
 ## Files
 
-| File | What it does |
+| File / folder | What it does |
 |---|---|
-| `index.html` | The whole game |
+| `index.html` | The game itself, kept small: menus, engine, library books, and a light index of the Bible stories |
+| `stories/` | The Bible stories, one small file per book (slides, quizzes, puzzles). Each downloads the first time a child opens that book, then stays on the device. When a book is updated, only that file downloads again. |
+| `bible/` | The Bible text, one small file per book. Each book downloads only when a child first opens it, then stays on the device for offline reading. |
+| `privacy.html` | Plain-language privacy page (also inside the app). Use this link in app-store listings. |
 | `sw.js` | Offline support |
 | `manifest.webmanifest` | Lets the game be installed like an app |
 | `icons/` | App icons |
@@ -30,7 +33,7 @@ Works offline once opened, and can be installed on phones and computers.
 
 ## Updating
 
-Replace the files in the repository with the new ones. Players get the new version the next time they open the game with internet.
+Replace the files in the repository with the new ones. Players get the new version the next time they open the game with internet. Downloaded Bible books are kept across updates.
 
 ## Note
 
