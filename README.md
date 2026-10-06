@@ -23,12 +23,12 @@ Works offline and can be installed on phones and computers.
 | File / folder | What it does |
 |---|---|
 | `index.html` | The game itself, kept small: menus, engine, library books, and a light index of the Bible stories |
-| `stories/` | The Bible stories, one small file per book (slides, quizzes, puzzles). Each downloads the first time a child opens that book, then stays on the device. When a book is updated, only that file downloads again. |
-| `bible/` | The Bible text, one small file per book. Each book downloads only when a child first opens it, then stays on the device for offline reading. |
+| `story-<book>.js` | The Bible stories, one small file per book (slides, quizzes, puzzles). Each downloads the first time a child opens that book, then stays on the device. |
+| `bible-<book>.js` | The Bible text (Bible in Basic English), one small file per book, downloaded when first opened and kept for offline reading. |
 | `privacy.html` | Plain-language privacy page (also inside the app). Use this link in app-store listings. |
 | `sw.js` | Offline support |
 | `manifest.webmanifest` | Lets the game be installed like an app |
-| `icons/` | App icons |
+| `icon-*.png`, `favicon-64.png`, `apple-touch-icon.png`, `share.png` | App icons |
 | `.nojekyll` | Tells GitHub Pages to serve the files exactly as they are |
 
 ## Updating
@@ -38,3 +38,7 @@ Replace the files in the repository with the new ones. Players get the new versi
 ## Note
 
 Player progress is saved on each device. Clearing the browser's data, or switching to another phone, starts fresh.
+
+
+## Uploading
+All files sit side by side with no sub-folders. On GitHub: Add file → Upload files, select **all** the files in this folder, and commit. Uploading the same names again simply replaces them.

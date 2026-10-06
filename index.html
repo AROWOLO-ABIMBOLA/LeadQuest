@@ -7,8 +7,8 @@
 <meta name="description" content="Lead Quest: leadership adventures for African pre-teens and teens. Walk through great books like The Pilgrim's Progress, learn verses and win crowns. Made by Dr. Arowolo Ayoola.">
 <meta name="theme-color" content="#4B2A9E">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" type="image/png" href="icons/favicon-64.png">
-<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="favicon-64.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -17,7 +17,7 @@
 <meta property="og:title" content="Lead Quest">
 <meta property="og:description" content="Leadership adventures for pre-teens and teens. Great books, brave choices, crowns and certificates.">
 <meta property="og:url" content="https://arowolo-abimbola.github.io/leadquest/">
-<meta property="og:image" content="https://arowolo-abimbola.github.io/leadquest/icons/share.png">
+<meta property="og:image" content="https://arowolo-abimbola.github.io/LeadQuest/share.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -6812,7 +6812,7 @@ Object.assign(PRAYERS, {
 <script>
 /* =========================================================
    FULL BIBLE: all 66 books open for chapter reading.
-   Each book's text loads only when opened (bible/<ab>.js) and is
+   Each book's text loads only when opened (bible-<ab>.js) and is
    kept for offline use. Books with illustrated stories show
    Stories + Chapters; the rest show Chapters until their stories
    are built.
@@ -6883,7 +6883,7 @@ function bbeReady(ab) {
   if (BBE[ab]) return Promise.resolve();
   if (BBE_WAIT[ab]) return BBE_WAIT[ab];
   BBE_WAIT[ab] = new Promise((res, rej) => {
-    const s = document.createElement("script"); s.src = `bible/${ab}.js`; s.async = true;
+    const s = document.createElement("script"); s.src = `bible-${ab}.js`; s.async = true;
     s.onload = () => (BBE[ab] ? res() : rej()); s.onerror = () => { delete BBE_WAIT[ab]; s.remove(); rej(); };
     document.head.appendChild(s);
   });
@@ -6942,7 +6942,7 @@ ROUTES["s-reader"] = () => whenBook(RD.ab, "rdText", _readerLazy, "s-reader");
 <script>
 /* =========================================================
    STORY PACKS: each Bible book's slides, quizzes and puzzles
-   live in stories/<book>.js and load the first time the book
+   live in story-<book>.js and load the first time the book
    (or one of its stories) is opened. The service worker keeps
    them for offline use, so each pack downloads only once and
    again only when that book is updated.
@@ -6954,7 +6954,7 @@ function storiesReady(ab) {
   if (STORY_WAIT[ab]) return STORY_WAIT[ab];
   STORY_WAIT[ab] = new Promise((res, rej) => {
     const s = document.createElement("script");
-    s.src = `stories/${ab}.js?v=${STORY_VER[ab] || "1"}`; s.async = true;
+    s.src = `story-${ab}.js?v=${STORY_VER[ab] || "1"}`; s.async = true;
     s.onload = () => (bk.storiesPending ? (delete STORY_WAIT[ab], rej()) : res());
     s.onerror = () => { delete STORY_WAIT[ab]; s.remove(); rej(); };
     document.head.appendChild(s);
@@ -6984,7 +6984,8 @@ openEpisode = (id) => {
    ========================================================= */
 const REG_URL = "https://script.google.com/macros/s/AKfycbyawJFxLkPXBwe3-qKQ3N6OajQNLhZa2c2iQsGOkHi9IKfrqrB4MxKIlGUs03qYurkE/exec";
 const REG_KEY = "lq-2026";
-const APP_VER = "v41";
+const APP_VER = "v43";
+const REG_EPOCH = 2;   /* raise this to make every device send its registration again */
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 /* ---------- what gets sent ---------- */
@@ -7004,6 +7005,7 @@ function regCheck() {
   DB.device = DB.device || "d" + Date.now().toString(36) + Math.floor(Math.random() * 1e6).toString(36);
   for (const p of DB.players) {
     if (p.regOptOut) continue;
+    if (p.regEpoch !== REG_EPOCH) { p.regId = p.regPr = p.regDay = ""; p.regEpoch = REG_EPOCH; }
     const idH = JSON.stringify(regIdentity(p)), prH = JSON.stringify(regProgress(p));
     const idChanged = p.regId !== idH, prChanged = p.regPr !== prH && p.regDay !== today();
     if (!idChanged && !prChanged) continue;
