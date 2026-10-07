@@ -4804,10 +4804,10 @@ setTimeout(() => { try { if (P()) { const c = currentChapter(); if (c && c.book.
    - Works offline: changes wait in DB.regQ and send when online.
    - REG_URL is the Apps Script web app address (empty = keep waiting).
    ========================================================= */
-const REG_URL = "https://script.google.com/macros/s/AKfycbyawJFxLkPXBwe3-qKQ3N6OajQNLhZa2c2iQsGOkHi9IKfrqrB4MxKIlGUs03qYurkE/exec";
+const REG_URL = "https://script.google.com/macros/s/AKfycbx4TXkYRpCfRR7Vjndz0JBweQOVCyhHOVDrNeFvMZMGgjidFOPD2KOfC9f8sTdWzSNCtA/exec";
 const REG_KEY = "lq-2026";
-const APP_VER = "v50";
-const REG_EPOCH = 2;   /* raise this to make every device send its registration again */
+const APP_VER = "v51";
+const REG_EPOCH = 3;   /* raise this to make every device send its registration again (3: new sheet, Oct 2026) */
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 /* ---------- what gets sent ---------- */
