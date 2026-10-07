@@ -1019,6 +1019,8 @@ canvas#confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-
           <div class="seg" id="genderPick" role="group" aria-labelledby="gLbl"></div></div>
         <div class="fld"><label for="countryIn">Country</label>
           <select id="countryIn" class="lin"></select></div>
+        <div class="fld" id="ownerFld" hidden><span class="flbl" id="ownLbl">Whose email will you give?</span>
+          <div class="seg" id="ownerPick" role="group" aria-labelledby="ownLbl"></div></div>
         <div class="fld"><label for="emailIn" id="emailLbl">Parent or guardian's email <small>optional</small></label>
           <input id="emailIn" class="lin" type="email" inputmode="email" autocomplete="email" placeholder="name@example.com">
           <label class="consentrow" id="consentRow"><input type="checkbox" id="consentIn"> <span id="consentTxt">I'm the parent or guardian. Dr. Ayoola may email me now and then. I can unsubscribe at any time.</span></label>
@@ -1322,6 +1324,7 @@ canvas#confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-
       <div class="card"><h3>🌗 Light or dark</h3><select id="paTheme"><option value="auto">Match the device</option><option value="light">Light</option><option value="dark">Dark</option></select></div>
       <div class="card"><h3>📲 Install the app</h3><p>Add Lead Quest to the home screen. It works offline after the first visit.</p><button class="btn" id="paInstall">Install</button><p class="t-s" id="paInstallHint"></p></div>
       <div class="card" id="regCard"><h3>📧 Family registration</h3><p>Optional. Get occasional encouragement from Dr. Ayoola and news when new books arrive.</p>
+        <div id="paOwnerRow" hidden><label for="paOwner" class="smlabel">Whose email is this?</label><select id="paOwner"><option value="self">My own email (16 or older)</option><option value="parent">My parent's or guardian's</option></select></div>
         <label for="paEmail" class="smlabel" id="paEmailLbl">Parent or guardian's email</label><input id="paEmail" class="textin smin" type="email" inputmode="email" autocomplete="email" placeholder="parent@example.com">
         <label for="paPhone" class="smlabel">Phone or WhatsApp <small>(optional)</small></label><input id="paPhone" class="textin smin" type="tel" inputmode="tel" autocomplete="tel" placeholder="+234 800 000 0000">
         <label class="consentrow"><input type="checkbox" id="paConsent"> <span id="paConsentTxt">I'm the parent or guardian and I agree to receive emails. I can unsubscribe at any time.</span></label>
@@ -1341,10 +1344,10 @@ canvas#confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-
       <p class="t-s">Last updated: October 2026</p>
       <h3>Who we are</h3><p>Lead Quest is made by Dr. Arowolo Ayoola. It is free and has no adverts.</p>
       <h3>What stays on this device</h3><p>Your child's progress, stars, cards, badges and voice messages are saved only on this device. They leave it only if you save a backup file yourself.</p>
-      <h3>What we receive when you register</h3><p>The player's first name or nickname, age, boy or girl, country, a player number made by the app, and simple progress counts (stories finished, stars and badges). We only receive an <b>email and phone number if the consent box is ticked</b>: a parent or guardian's for players under 18, or your own if you are 18 or over.</p>
+      <h3>What we receive when you register</h3><p>The player's first name or nickname, age, boy or girl, country, a player number made by the app, and simple progress counts (stories finished, stars and badges). We only receive an <b>email and phone number if the consent box is ticked</b>: a parent or guardian's for players under 16, and your own if you are 18 or over. Players aged 16 or 17 may give their own email, as long as a parent or guardian knows.</p>
       <h3>Why</h3><p>To know how many children use Lead Quest and where, to make it better, and, only with your consent, to send you occasional encouragement and news of new books.</p>
       <h3>Where it is kept</h3><p>In a private Google Sheet in Dr. Ayoola's Google account. We never sell your details or share them with advertisers.</p>
-      <h3>Children</h3><p>For players under 18 we ask for a parent's or guardian's email, not the child's, and only with a parent's agreement. Using Lead Quest without giving an email is always fine.</p>
+      <h3>Children</h3><p>For players under 16 we ask for a parent's or guardian's email, not the child's, and only with a parent's agreement. Players aged 16 or 17 may use their own email if a parent or guardian knows. Using Lead Quest without giving an email is always fine.</p>
       <h3>Your choices</h3><p>Every email has an unsubscribe link. You can remove your details at any time in the Parent corner, under Family registration. You can also reply to any Lead Quest email to ask for a copy of your details or for them to be deleted.</p>
       <h3>Changes</h3><p>If this page changes, the date at the top will change too.</p>
     </div></div>
@@ -2710,6 +2713,11 @@ const LOOKS = {
   girl: [{ skin: 1, hair: "puffs", top: "#E8457E" }, { skin: 3, hair: "braids", top: "#7A4FE0" }, { skin: 2, hair: "afro", top: "#FFC83D" }, { skin: 4, hair: "bun", top: "#3FA9F5" }, { skin: 0, hair: "long", top: "#22A36A" }, { skin: 2, hair: "low", top: "#FF6B3D", head: "gele" }, { skin: 3, hair: "puffs", top: "#1F1A4A", extra: "glasses" }, { skin: 1, hair: "cornrows", top: "#E8457E" }]
 };
 const fullLook = (l) => Object.assign({ skin: 2, hair: "low", hc: "#1B1B1B", top: "#3FA9F5", pat: "plain", head: "none", extra: "none", bg: "#FFC83D" }, l);
+/* ---------- whose email: 18+ always their own; 16-17 may choose their own; under 16 a parent's ---------- */
+const ownerFor = (age, choice) => (age || 0) >= 18 ? "self" : (age || 0) >= 16 && choice !== "parent" ? "self" : "parent";
+const emailTexts = (age, owner) => owner !== "self" ? { label: "Parent or guardian's email", consent: "I'm the parent or guardian. Dr. Ayoola may email me now and then. I can unsubscribe at any time." }
+  : (age || 0) >= 18 ? { label: "Your email", consent: "Dr. Ayoola may email me now and then. I can unsubscribe at any time." }
+  : { label: "Your email", consent: "I'm 16 or older, and my parent or guardian knows I'm giving my own email. Dr. Ayoola may email me now and then. I can unsubscribe at any time." };
 /* ---------- age looks: 12 and under = "kid", 13-18 = "teen", 19+ = "adult" ---------- */
 const skinForAge = (a) => !a ? "teen" : a <= 12 ? "kid" : a <= 18 ? "teen" : "adult";
 const SKIN_INFO = {
@@ -2727,7 +2735,7 @@ function applySkin(sid) {
 }
 function openWelcome(edit) {
   const p = edit ? P() : null;
-  W = { step: 0, name: p ? p.name : "", country: (p && p.country) || "Nigeria", email: (p && p.email) || "", gender: p ? p.gender : null, age: p ? p.age : null, look: p ? p.look : null, edit: !!edit };
+  W = { step: 0, name: p ? p.name : "", country: (p && p.country) || "Nigeria", email: (p && p.email) || "", gender: p ? p.gender : null, age: p ? p.age : null, look: p ? p.look : null, edit: !!edit, owner: (p && p.emailOwner) || "self" };
   $("nameIn").value = W.name; $("countryIn").innerHTML = COUNTRIES.map((c) => `<option ${c === W.country ? "selected" : ""}>${esc(c)}</option>`).join(""); $("emailIn").value = W.email; show("welcome");
 }
 ROUTES["s-welcome"] = () => renderWelcome();
@@ -2742,10 +2750,12 @@ function renderWelcome() {
   $("wPreview").innerHTML = avatarSVG(fullLook(W.look || { skin: 2, hair: W.gender === "girl" ? "puffs" : "low", top: "#3FA9F5" }), { e: "big" });
   $("genderPick").innerHTML = [["boy", "Boy"], ["girl", "Girl"]].map(([v, l]) => `<button type="button" data-g="${v}" aria-pressed="${W.gender === v}">${l}</button>`).join("");
   $("agePick").innerHTML = AGES.map((a) => `<button type="button" data-a="${a}" aria-pressed="${W.age === a || (a === 19 && W.age > 19)}" aria-label="${a === 19 ? "19 or older" : a}">${a === 19 ? "19+" : a}</button>`).join("");
-  const adult = W.age >= 18;
   $("ageHint").textContent = W.age ? SKIN_INFO[skinForAge(W.age)].note : "";
-  $("emailLbl").innerHTML = (adult ? "Your email" : "Parent or guardian's email") + " <small>optional</small>";
-  $("consentTxt").textContent = adult ? "Dr. Ayoola may email me now and then. I can unsubscribe at any time." : "I'm the parent or guardian. Dr. Ayoola may email me now and then. I can unsubscribe at any time.";
+  const teen16 = W.age === 16 || W.age === 17, owner = ownerFor(W.age, W.owner), tx = emailTexts(W.age, owner);
+  $("ownerFld").hidden = !teen16;
+  $("ownerPick").innerHTML = [["self", "My own email"], ["parent", "My parent's or guardian's"]].map(([v, l]) => `<button type="button" data-ow="${v}" aria-pressed="${owner === v}">${l}</button>`).join("");
+  $("emailLbl").innerHTML = tx.label + " <small>optional</small>";
+  $("consentTxt").textContent = tx.consent;
   const sk = skinForAge(W.age);
   $("lookTitle").textContent = sk === "kid" ? `Hi ${W.name || "friend"}! Pick your look` : sk === "adult" ? "Choose your avatar" : `Pick your look, ${W.name || "friend"}`;
   const set = LOOKS[W.gender || "boy"];
@@ -2755,6 +2765,7 @@ function renderWelcome() {
 }
 const wKeep = () => { W.name = $("nameIn").value.trim(); W.country = $("countryIn").value; W.email = $("emailIn").value.trim(); };
 $("genderPick").onclick = (e) => { const b = e.target.closest("[data-g]"); if (!b) return; sfx.tap(); wKeep(); if (W.gender !== b.dataset.g) W.look = null; W.gender = b.dataset.g; renderWelcome(); };
+$("ownerPick").onclick = (e) => { const b = e.target.closest("[data-ow]"); if (!b) return; sfx.tap(); wKeep(); W.owner = b.dataset.ow; renderWelcome(); };
 $("agePick").onclick = (e) => { const b = e.target.closest("[data-a]"); if (!b) return; sfx.tap(); wKeep(); W.age = +b.dataset.a; renderWelcome(); };
 $("lookPick").onclick = (e) => { const b = e.target.closest("[data-l]"); if (!b) return; sfx.tap(); const i = +b.dataset.l; W.look = Object.assign(fullLook(LOOKS[W.gender || "boy"][i]), { _i: i }); renderWelcome(); };
 $("nameIn").addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); $("agePick").querySelector("button").focus(); } });
@@ -2773,8 +2784,8 @@ $("wNext").onclick = () => {
 $("wGo").onclick = () => {
   if (!W.look) W.look = fullLook(LOOKS[W.gender][0]);
   const look = Object.assign({}, W.look); delete look._i;
-  if (W.edit) { const p = P(); const changedG = p.gender !== W.gender; Object.assign(p, { name: W.name, country: W.country, email: W.email, gender: W.gender, age: W.age }); if (changedG && (p.title === "King" || p.title === "Queen")) p.title = W.gender === "girl" ? "Queen" : "King"; if (W.look._i !== undefined) p.look = look; save(); toast("Profile saved"); show("profile"); return; }
-  const p = newPlayer(W.name, W.gender, W.age, look); p.country = W.country; p.email = W.email; DB.players.push(p); DB.current = p.id; save();
+  if (W.edit) { const p = P(); const changedG = p.gender !== W.gender; Object.assign(p, { name: W.name, country: W.country, email: W.email, gender: W.gender, age: W.age, emailOwner: ownerFor(W.age, W.owner) }); if (changedG && (p.title === "King" || p.title === "Queen")) p.title = W.gender === "girl" ? "Queen" : "King"; if (W.look._i !== undefined) p.look = look; save(); toast("Profile saved"); show("profile"); return; }
+  const p = newPlayer(W.name, W.gender, W.age, look); p.country = W.country; p.email = W.email; p.emailOwner = ownerFor(W.age, W.owner); DB.players.push(p); DB.current = p.id; save();
   sfx.win(); burst(); show("home");
   setTimeout(() => speak(`Welcome, ${p.name}! ${WELCOME_MSG}`, { rate: .95 }), 400);
 };
@@ -4795,14 +4806,14 @@ setTimeout(() => { try { if (P()) { const c = currentChapter(); if (c && c.book.
    ========================================================= */
 const REG_URL = "https://script.google.com/macros/s/AKfycbyawJFxLkPXBwe3-qKQ3N6OajQNLhZa2c2iQsGOkHi9IKfrqrB4MxKIlGUs03qYurkE/exec";
 const REG_KEY = "lq-2026";
-const APP_VER = "v49";
+const APP_VER = "v50";
 const REG_EPOCH = 2;   /* raise this to make every device send its registration again */
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 /* ---------- what gets sent ---------- */
 const regIdentity = (p) => {
   const ok = !!(p.consent && p.email);
-  return { pid: p.id, name: p.name, age: p.age, gender: p.gender, country: p.country || "", email: ok ? p.email : "", phone: ok ? (p.phone || "") : "", consent: ok };
+  return { pid: p.id, name: p.name, age: p.age, gender: p.gender, country: p.country || "", email: ok ? p.email : "", phone: ok ? (p.phone || "") : "", consent: ok, owner: ok ? ownerFor(p.age, p.emailOwner) : "" };
 };
 const regProgress = (p) => {
   const b = p.bible || { eps: {}, cards: [] };
@@ -4861,7 +4872,7 @@ $("wPrivacy").onclick = () => { PREV = "s-welcome"; show("privacy"); };
 const _wNextReg = $("wNext").onclick;
 $("wNext").onclick = () => {
   const em = $("emailIn").value.trim();
-  if (em && EMAIL_RE.test(em) && !$("consentIn").checked) { $("wHint").textContent = (W.age >= 18 ? "Tick the box to let Dr. Ayoola email you" : "Please ask a parent or guardian to tick the box") + ", or leave the email empty."; return; }
+  if (em && EMAIL_RE.test(em) && !$("consentIn").checked) { $("wHint").textContent = (ownerFor(W.age, W.owner) === "self" ? "Tick the box to let Dr. Ayoola email you" : "Please ask a parent or guardian to tick the box") + ", or leave the email empty."; return; }
   W.consent = !!em && $("consentIn").checked;
   _wNextReg();
 };
@@ -4882,9 +4893,11 @@ $("wGo").onclick = () => {
 function renderRegCard() {
   const p = P(); if (!p) return;
   $("paEmail").value = p.email || ""; $("paPhone").value = p.phone || ""; $("paConsent").checked = !!p.consent;
-  const self = (p.age || 0) >= 18;
-  $("paEmailLbl").textContent = self ? "Your email" : "Parent or guardian's email";
-  $("paConsentTxt").textContent = self ? "I agree to receive emails from Dr. Ayoola. I can unsubscribe at any time." : "I'm the parent or guardian and I agree to receive emails. I can unsubscribe at any time.";
+  const own = ownerFor(p.age, p.emailOwner), tx = emailTexts(p.age, own);
+  $("paOwnerRow").hidden = !((p.age || 0) >= 16 && (p.age || 0) < 18);
+  $("paOwner").value = own;
+  $("paEmailLbl").textContent = tx.label;
+  $("paConsentTxt").textContent = tx.consent;
   const waiting = (DB.regQ || []).some((q) => q.pid === p.id);
   let s;
   if (p.regOptOut) s = "Your details were removed from Dr. Ayoola's list. Tap Save to join again.";
@@ -4901,9 +4914,10 @@ $("paRegSave").onclick = () => {
   if (em && !EMAIL_RE.test(em)) { toast("That email doesn't look right."); return; }
   if ((em || ph) && !$("paConsent").checked) { toast("Please tick the box to agree, or clear the email and phone."); return; }
   if ($("paConsent").checked && !p.consent) p.consentAt = Date.now();
-  Object.assign(p, { email: em, phone: ph, consent: !!(em || ph) && $("paConsent").checked, regOptOut: false });
+  Object.assign(p, { email: em, phone: ph, consent: !!(em || ph) && $("paConsent").checked, regOptOut: false, emailOwner: $("paOwnerRow").hidden ? p.emailOwner : $("paOwner").value });
   save(); sfx.good(); toast(p.consent ? "Saved. Thank you!" : "Saved."); renderRegCard();
 };
+$("paOwner").onchange = () => { const p = P(), tx = emailTexts(p.age, ownerFor(p.age, $("paOwner").value)); $("paEmailLbl").textContent = tx.label; $("paConsentTxt").textContent = tx.consent; };
 $("paPrivacy").onclick = () => { PREV = "s-parent"; show("privacy"); };
 $("paRegRemove").onclick = () => {
   if (!confirm("Remove your details from Dr. Ayoola's list? Your child's progress on this device stays.")) return;
