@@ -21,7 +21,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Lora:ital,wght@0,600;0,700;1,500;1,600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Lora:ital,wght@0,600;0,700;1,500;1,600&family=Dancing+Script:wght@700&family=Fredoka:wght@400;500;600;700&family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Figtree:wght@400;500;600;700;800&family=Literata:opsz,wght@7..72,400..700&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg: #E7ECFF; --dot: #D3DCFF; --card: #FFFFFF; --ink: #1F1A4A; --soft: #5B5788;
@@ -414,6 +414,287 @@ textarea { min-height: 70px; resize: vertical; }
 .bigseal { width: clamp(90px, 22cqmin, 160px); height: clamp(90px, 22cqmin, 160px); border-radius: 50%; background: var(--royal); color: var(--gold); display: grid; place-items: center; font-size: clamp(34px, 9cqmin, 64px); font-weight: 800; border: 4px solid var(--ink); box-shadow: 0 6px 0 var(--ink); }
 
 
+
+/* =====================================================================
+   LANDING (plain and warm, before we know the reader's age)
+   ===================================================================== */
+:root[data-skin="land"] { --font: "Figtree", system-ui, sans-serif; }
+#s-welcome { padding: 0; gap: 0; }
+#s-welcome .wstep { justify-content: flex-start; }
+#s-welcome .wstep.land { position: relative; flex: 1; flex-direction: column; align-items: center; gap: clamp(14px, 2.6cqh, 24px); padding: clamp(14px, 3.4cqh, 44px) 16px 14px; overflow-y: auto;
+  background: linear-gradient(180deg, #FFE1C2 0%, #FFF0E0 34%, #FFFAF4 100%); color: #3B2346; font-family: "Figtree", system-ui, sans-serif; }
+.landsky { position: absolute; inset: 0 0 auto 0; height: 360px; pointer-events: none; overflow: hidden; }
+.landsky::before { content: ""; position: absolute; width: 280px; height: 280px; right: -70px; top: -90px; border-radius: 50%; background: radial-gradient(circle, #FFCB7A 0 44%, rgba(255,203,122,.32) 45% 64%, transparent 65%); }
+.landsky::after { content: ""; position: absolute; width: 180px; height: 180px; left: -80px; top: 150px; border-radius: 50%; background: rgba(255,186,140,.22); }
+.landhead { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; width: 100%; max-width: 520px; }
+.landback { align-self: flex-start; background: none; border: 0; font: 700 15px "Figtree", sans-serif; color: #7A5A6A; padding: 4px 0; }
+.landmark { font-size: clamp(34px, 8cqmin, 48px); line-height: 1; }
+.landlogo { font: 800 clamp(42px, 12cqmin, 76px)/.95 "Figtree", sans-serif; letter-spacing: -.035em; color: #3B2346; }
+.landtag { font: 600 clamp(15px, 3.8cqmin, 19px)/1.3 "Figtree", sans-serif; color: #8A5244; }
+.landform { position: relative; width: 100%; max-width: 520px; background: #FFFFFF; border-radius: 24px; padding: clamp(18px, 3cqh, 28px) clamp(16px, 4cqw, 28px);
+  box-shadow: 0 1px 0 rgba(59,35,70,.06), 0 22px 50px -26px rgba(138,82,68,.45); display: flex; flex-direction: column; gap: 18px; text-align: left; }
+.landhello { font: 600 17px/1.45 "Figtree", sans-serif; color: #5A4458; }
+.fld { display: flex; flex-direction: column; gap: 8px; }
+.landform .fld > label, .landform .flbl { font: 700 15px/1.2 "Figtree", sans-serif; color: #3B2346; text-align: left; }
+.landform .fld small { font-weight: 600; color: #A08894; margin-left: 4px; font-size: 13px; }
+.lin { font: 600 18px "Figtree", sans-serif; color: #3B2346; background: #FFF8F1; border: 1.5px solid #EBD8C6; border-radius: 14px; padding: 12px 14px; width: 100%; text-align: left; }
+.lin::placeholder { color: #B9A2A8; }
+.lin:focus { outline: 3px solid #F5BD78; outline-offset: 1px; border-color: #E39A4A; }
+.agechips { display: grid; grid-template-columns: repeat(7, 1fr); gap: 7px; }
+.agechips button, .seg button { font: 700 17px "Figtree", sans-serif; color: #3B2346; background: #FFF8F1; border: 1.5px solid #EBD8C6; border-radius: 12px; padding: 9px 0; min-height: 44px; }
+.agechips button[aria-pressed="true"], .seg button[aria-pressed="true"] { background: #3B2346; border-color: #3B2346; color: #FFFFFF; }
+.agehint { font: 600 14px/1.35 "Figtree", sans-serif; color: #8A5244; min-height: 1.35em; }
+.agehint:empty { display: none; }
+.seg { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.landform label.consentrow { font: 500 14px/1.4 "Figtree", sans-serif; color: #5A4458; margin: 2px 0 0; }
+.landform .consentrow input { accent-color: #3B2346; }
+.linkbtn { align-self: flex-start; background: none; border: 0; padding: 0; font: 600 14px "Figtree", sans-serif; color: #8A5244; text-decoration: underline; text-underline-offset: 3px; }
+.landform .hint { text-align: left; min-height: 0; color: #C0392B; font: 700 15px "Figtree", sans-serif; }
+.landform .hint:empty { display: none; }
+.landgo { font: 800 19px "Figtree", sans-serif; color: #FFFFFF; background: #3B2346; border: 0; border-radius: 16px; padding: 15px; box-shadow: 0 5px 0 #22122B; transition: transform .08s, box-shadow .08s; touch-action: manipulation; }
+.landgo:active { transform: translateY(4px); box-shadow: 0 1px 0 #22122B; }
+.landgo:focus-visible, .agechips button:focus-visible, .seg button:focus-visible, .linkbtn:focus-visible, .landback:focus-visible { outline: 3px solid #E39A4A; outline-offset: 2px; }
+.wstep.land .maker { color: #8A6A70; }
+@container app (max-width: 400px) { .agechips { grid-template-columns: repeat(5, 1fr); } }
+@container app (min-width: 860px) {
+  #s-welcome .wstep.land { flex-direction: row; flex-wrap: wrap; justify-content: center; align-content: safe center; align-items: safe center; column-gap: 64px; }
+  .landhead { max-width: 380px; align-items: flex-start; text-align: left; }
+  .landsky { height: 100%; }
+  #s-welcome .wstep.land .maker { flex-basis: 100%; }
+}
+#s-welcome .wstep.pick { flex: 1; flex-direction: column; gap: var(--gap); padding: clamp(8px, 2cqh, 22px) clamp(12px, 3.5cqw, 36px); overflow-y: auto; }
+.wstep.pick .lookgrid { max-width: 560px; width: 100%; margin: 0 auto; }
+.wstep.pick .colB { justify-content: center; gap: 12px; }
+
+/* =====================================================================
+   AGE LOOKS. data-skin on <html>: kid (12 and under), teen (13-18),
+   adult (19+). Content is identical; only the look changes.
+   Per-book themes (body[data-book]) come later and still win inside books.
+   ===================================================================== */
+.stylepick { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; align-items: center; margin-top: 8px; font-weight: 700; font-size: 14px; }
+.stylepick span { color: var(--soft); margin-right: 2px; }
+.stylepick button { font: inherit; font-size: 13px; border: 2px solid var(--ink); background: var(--card); border-radius: 999px; padding: 3px 10px; }
+.stylepick button[aria-pressed="true"] { background: var(--royal); color: #FFFFFF; border-color: var(--royal); }
+
+/* ---------- KID: a bright sticker-book playground ---------- */
+:root[data-skin="kid"] {
+  --bg: #DDF3FF; --dot: #C2E8FF; --card: #FFFFFF; --ink: #262163; --soft: #56588F;
+  --gold: #FFC93C; --ember: #FF7A45; --leaf: #35C96A; --sky: #2EAEFF; --royal: #7C4DFF; --berry: #FF5FA8; --mud: #8A5A2B;
+  --good: #2CC46C; --oops: #FF5A5A; --track: #D2E7FF;
+  --font: "Fredoka", "Baloo 2", "Arial Rounded MT Bold", system-ui, sans-serif; --word: "Fredoka", "Baloo 2", system-ui, sans-serif;
+}
+:root[data-skin="kid"] body { background-color: var(--bg);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='210'%3E%3Cg fill='%23fff' opacity='.85'%3E%3Cellipse cx='62' cy='52' rx='36' ry='14'/%3E%3Cellipse cx='80' cy='42' rx='21' ry='15'/%3E%3Cellipse cx='50' cy='44' rx='15' ry='11'/%3E%3Cellipse cx='192' cy='150' rx='28' ry='11'/%3E%3Cellipse cx='206' cy='142' rx='16' ry='11'/%3E%3C/g%3E%3Cpath d='M200 44l3 7 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z' fill='%23FFD84D'/%3E%3Ccircle cx='122' cy='176' r='4' fill='%23FF8FC5'/%3E%3Ccircle cx='30' cy='160' r='3.5' fill='%237CE0A0'/%3E%3Ccircle cx='150' cy='22' r='3' fill='%2399D6FF'/%3E%3C/svg%3E");
+  background-size: 260px 210px; background-position: 0 0; }
+:root[data-skin="kid"] :is(.minicover, .cinfo b, .votd blockquote, .shelf h3, .bigcover .bt, .aboutp, .word, .versebox, .certpaper .cq, .btag, .booksheet .bt) { font-style: normal; font-weight: 600; }
+:root[data-skin="kid"] [style*="font-style:italic"] { font-style: normal !important; font-weight: 600 !important; }
+:root[data-skin="kid"] :is(.t-xl, .t-l, .t-m, b, .btn) { font-weight: 700; }
+:root[data-skin="kid"] .t-s { font-weight: 500; }
+:root[data-skin="kid"] .btn { border-width: 3.5px; border-radius: 22px; box-shadow: 0 6px 0 var(--ink); }
+:root[data-skin="kid"] .btn:active { transform: translateY(5px) scale(.97); box-shadow: 0 1px 0 var(--ink); }
+:root[data-skin="kid"] .btn.go { background: linear-gradient(180deg, #FFDF5C, #FFB81F); color: #262163; }
+:root[data-skin="kid"] .card { border-width: 3.5px; border-radius: 28px; box-shadow: 0 7px 0 var(--ink); }
+:root[data-skin="kid"] .pill { border-width: 3px; background: #FFF7D1; }
+:root[data-skin="kid"] .topbar h2 { color: var(--royal); }
+:root[data-skin="kid"] .iconbtn { border-radius: 50%; background: #FFF7D1; }
+/* home: a sunny day with hills */
+:root[data-skin="kid"] #s-home { color: var(--ink); background-color: #8FD6FF;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='260'%3E%3Cg fill='%23fff' opacity='.9'%3E%3Cellipse cx='70' cy='70' rx='44' ry='17'/%3E%3Cellipse cx='92' cy='56' rx='26' ry='19'/%3E%3Cellipse cx='56' cy='60' rx='18' ry='13'/%3E%3Cellipse cx='240' cy='190' rx='34' ry='13'/%3E%3Cellipse cx='256' cy='180' rx='19' ry='13'/%3E%3C/g%3E%3C/svg%3E"), linear-gradient(180deg, #5BC4FF 0%, #A6E1FF 46%, #D9F4FF 72%);
+  background-size: 320px 260px, 100% 100%; background-repeat: repeat, no-repeat; }
+:root[data-skin="kid"] .lobbysky::before { left: auto; right: -40px; top: -40px; bottom: auto; transform: none; width: 170px; height: 170px; background: radial-gradient(circle, #FFE25C 0 40%, rgba(255,226,92,.45) 41% 58%, transparent 60%); }
+:root[data-skin="kid"] .lobbysky::after { left: -10%; right: -10%; width: auto; bottom: -12cqh; height: 34cqh; transform: none; clip-path: none; border-radius: 50% 50% 0 0;
+  background: radial-gradient(ellipse at 30% 0, #8BE07E 0 45%, transparent 46%), radial-gradient(ellipse at 80% 10%, #6CD06A 0 50%, transparent 51%), #5CC25E; }
+:root[data-skin="kid"] .me .avbox { box-shadow: 0 0 0 4px #FFFFFF, 0 0 0 7px var(--ink); background: #FFF7D1; }
+:root[data-skin="kid"] .metext b { font-size: clamp(20px, 5.4cqmin, 32px); }
+:root[data-skin="kid"] :is(.glass, .glassbtn) { background: #FFFFFF; border: 3px solid var(--ink); backdrop-filter: none; color: var(--ink); }
+:root[data-skin="kid"] .continue { background: #FFFFFF; color: var(--ink); border: 4px solid var(--ink); border-radius: 30px; box-shadow: 0 8px 0 var(--ink); transform: rotate(-1.2deg); }
+:root[data-skin="kid"] .continue:active { transform: rotate(-1.2deg) translateY(5px); box-shadow: 0 3px 0 var(--ink); }
+:root[data-skin="kid"] .ctag { color: #E8457E; font-weight: 700; }
+:root[data-skin="kid"] .cchap, :root[data-skin="kid"] .cnext { color: var(--soft); }
+:root[data-skin="kid"] .cbar { height: 12px; border-radius: 6px; background: #E6EEFF; border: 2px solid var(--ink); }
+:root[data-skin="kid"] .cbar i { background: repeating-linear-gradient(45deg, #FF8FC5 0 8px, #FF6FAE 8px 16px); }
+:root[data-skin="kid"] .cgo { background: #FF6FAE; color: #FFFFFF; border: 3px solid var(--ink); }
+:root[data-skin="kid"] .door { color: var(--ink); border: 4px solid var(--ink); border-radius: 26px; box-shadow: 0 7px 0 var(--ink); backdrop-filter: none; }
+:root[data-skin="kid"] .door:nth-child(1) { background: #FFB3D9; transform: rotate(1.5deg); }
+:root[data-skin="kid"] .door:nth-child(2) { background: #A8EFA0; transform: rotate(-1.5deg); }
+:root[data-skin="kid"] .door:nth-child(3) { background: #FFE27A; }
+:root[data-skin="kid"] .door:hover { filter: brightness(1.04); }
+:root[data-skin="kid"] .door em { background: #FFFFFF; border: 2px solid var(--ink); color: var(--ink); }
+:root[data-skin="kid"] .door span { opacity: 1; }
+:root[data-skin="kid"] .votd { background: #FFFFFF; border: 3.5px dashed var(--ink); border-radius: 24px; padding: 12px 14px; color: var(--ink); }
+:root[data-skin="kid"] .votd blockquote { font-weight: 600; }
+:root[data-skin="kid"] .maker.light { color: #2F5A2A; position: relative; }
+/* library */
+:root[data-skin="kid"] .shelf h3 { color: var(--royal); font-weight: 700; font-size: clamp(22px, 5.6cqmin, 32px); }
+:root[data-skin="kid"] .bookbtn .bigcover { border: 4px solid #FFFFFF; border-radius: 18px; box-shadow: 0 0 0 3px var(--ink), 0 7px 0 3px var(--ink); }
+:root[data-skin="kid"] .bookbtn:nth-child(odd) .bigcover { transform: rotate(-2deg); }
+:root[data-skin="kid"] .bookbtn:nth-child(even) .bigcover { transform: rotate(2deg); }
+:root[data-skin="kid"] .row-covers { padding: 10px 8px 16px; }
+:root[data-skin="kid"] .minicover { border-radius: 14px; border: 3px solid #FFFFFF; box-shadow: 0 0 0 2.5px var(--ink); }
+:root[data-skin="kid"] .cover { border-radius: 14px; }
+/* chapters, steps, map */
+:root[data-skin="kid"] .chrow:nth-child(4n+1) .num { background: #FFC93C; }
+:root[data-skin="kid"] .chrow:nth-child(4n+2) .num { background: #FF8FC5; }
+:root[data-skin="kid"] .chrow:nth-child(4n+3) .num { background: #7CE0A0; }
+:root[data-skin="kid"] .chrow:nth-child(4n+4) .num { background: #8FD3FF; }
+:root[data-skin="kid"] .step:nth-child(4n+2):not(.next) { background: #FFE3F1; }
+:root[data-skin="kid"] .step:nth-child(4n+3):not(.next) { background: #E2F9E6; }
+:root[data-skin="kid"] .step:nth-child(4n+4):not(.next) { background: #E3F2FF; }
+:root[data-skin="kid"] .stephead .ico { border-radius: 50%; transform: rotate(-6deg); }
+:root[data-skin="kid"] .mapwrap { border-width: 4px; border-radius: 32px; box-shadow: 0 8px 0 var(--ink); }
+:root[data-skin="kid"] .node { border-width: 4px; }
+/* story */
+:root[data-skin="kid"] :is(.bubble, .narr) { border-width: 4px; border-radius: 30px; font-weight: 600; }
+:root[data-skin="kid"] .bubble::before { border-right-color: #262163; }
+:root[data-skin="kid"] .tag { background: #FF6FAE; color: #FFFFFF; }
+:root[data-skin="kid"] .gl { background: rgba(255,214,60,.65); }
+/* quiz */
+:root[data-skin="kid"] .opt { border-radius: 22px; }
+:root[data-skin="kid"] .opt:nth-child(4n+1) .let { background: #FFC93C; }
+:root[data-skin="kid"] .opt:nth-child(4n+2) .let { background: #FF8FC5; }
+:root[data-skin="kid"] .opt:nth-child(4n+3) .let { background: #7CE0A0; }
+:root[data-skin="kid"] .opt:nth-child(4n+4) .let { background: #8FD3FF; }
+:root[data-skin="kid"] .dots i { height: 14px; border-radius: 7px; }
+:root[data-skin="kid"] .toast { background: var(--royal); color: #FFFFFF; }
+:root[data-skin="kid"] .rank { background: #FF6FAE; color: #FFFFFF; }
+:root[data-skin="kid"] .sticker i { border-width: 3.5px; }
+
+/* ---------- TEEN: a bold poster look ---------- */
+:root[data-skin="teen"] {
+  --bg: #F2EFFF; --dot: #E3DDFB; --card: #FFFFFF; --ink: #16112F; --soft: #59537C;
+  --gold: #FFD43B; --ember: #FF6A1A; --leaf: #12C497; --sky: #5B2EFF; --royal: #5B2EFF; --berry: #FF3D8B;
+  --good: #12B886; --oops: #F03E5A; --track: #E3DDFB;
+  --font: "Bricolage Grotesque", "Arial Narrow", system-ui, sans-serif; --word: "Bricolage Grotesque", system-ui, sans-serif;
+}
+:root[data-skin="teen"] body { background-color: var(--bg);
+  background-image: linear-gradient(var(--dot) 1px, transparent 1px), linear-gradient(90deg, var(--dot) 1px, transparent 1px); background-size: 30px 30px; background-position: -1px -1px; }
+:root[data-skin="teen"] :is(.minicover, .cinfo b, .votd blockquote, .shelf h3, .bigcover .bt, .aboutp, .word, .versebox, .certpaper .cq, .btag, .booksheet .bt) { font-style: normal; }
+:root[data-skin="teen"] [style*="font-style:italic"] { font-style: normal !important; font-weight: 700 !important; }
+:root[data-skin="teen"] :is(.t-xl, .t-l, .t-m) { letter-spacing: -.02em; }
+:root[data-skin="teen"] .t-s { font-weight: 500; }
+:root[data-skin="teen"] .btn { border-width: 2.5px; border-radius: 12px; box-shadow: 4px 4px 0 var(--ink); }
+:root[data-skin="teen"] .btn:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 var(--ink); }
+:root[data-skin="teen"] .btn.go { background: #FF6A1A; color: #16112F; }
+:root[data-skin="teen"] .btn[aria-pressed="true"] { background: var(--royal); }
+:root[data-skin="teen"] .card { border-width: 2.5px; border-radius: 16px; box-shadow: 5px 5px 0 var(--ink); }
+:root[data-skin="teen"] .pill { border-width: 2.5px; border-radius: 10px; }
+:root[data-skin="teen"] .iconbtn { border-radius: 12px; }
+:root[data-skin="teen"] .topbar h2 { font-weight: 800; }
+/* home: violet poster with a sun disc and a stripe */
+:root[data-skin="teen"] #s-home { color: #FFFFFF; background: linear-gradient(165deg, #21128A 0%, #4A22E8 52%, #6F45FF 100%); }
+:root[data-skin="teen"] .lobbysky::before { left: auto; right: -22cqmin; bottom: -18cqmin; transform: none; width: 70cqmin; height: 70cqmin; background: #FF6A1A; opacity: .95; }
+:root[data-skin="teen"] .lobbysky::after { left: -20%; width: 140%; bottom: 72cqh; height: 26px; transform: rotate(-12deg); clip-path: none; background: #12C497; }
+:root[data-skin="teen"] :is(.glass, .glassbtn) { background: #16112F; border: 2px solid #FFFFFF; backdrop-filter: none; }
+:root[data-skin="teen"] .me .avbox { box-shadow: 0 0 0 3px #FFD43B; }
+:root[data-skin="teen"] .continue { background: #FFFFFF; color: #16112F; border: 2.5px solid #16112F; border-radius: 18px; box-shadow: 7px 7px 0 #16112F; }
+:root[data-skin="teen"] .continue:active { transform: translate(4px, 4px); box-shadow: 3px 3px 0 #16112F; }
+:root[data-skin="teen"] .ctag { color: #5B2EFF; font-weight: 700; }
+:root[data-skin="teen"] .cinfo b { font-weight: 800; letter-spacing: -.02em; }
+:root[data-skin="teen"] .cbar { height: 10px; border-radius: 0; background: #ECE8FF; }
+:root[data-skin="teen"] .cbar i { border-radius: 0; background: #5B2EFF; }
+:root[data-skin="teen"] .cgo { border-radius: 14px; background: #FF6A1A; color: #16112F; border: 2.5px solid #16112F; }
+:root[data-skin="teen"] .door { color: #16112F; border: 2.5px solid #16112F; border-radius: 18px; box-shadow: 6px 6px 0 #16112F; backdrop-filter: none; }
+:root[data-skin="teen"] .door:nth-child(1) { background: #FFD43B; }
+:root[data-skin="teen"] .door:nth-child(2) { background: #8CF0D2; }
+:root[data-skin="teen"] .door:nth-child(3) { background: #FFB3D0; }
+:root[data-skin="teen"] .door:hover { filter: brightness(1.03); }
+:root[data-skin="teen"] .door b { font-weight: 800; letter-spacing: -.02em; }
+:root[data-skin="teen"] .door span { opacity: 1; }
+:root[data-skin="teen"] .door em { background: #16112F; color: #FFD43B; }
+:root[data-skin="teen"] .votd { position: relative; background: #16112F; color: #FFFFFF; border-radius: 16px; padding: 12px 16px; text-align: left; border-left: 8px solid #FFD43B; }
+:root[data-skin="teen"] .votd blockquote { font-weight: 600; }
+/* library */
+:root[data-skin="teen"] .shelf h3 { font-weight: 800; letter-spacing: -.02em; }
+:root[data-skin="teen"] .bookbtn .bigcover { border: 2.5px solid #16112F; border-radius: 8px; box-shadow: 5px 5px 0 #16112F; }
+:root[data-skin="teen"] .bigcover .bt { font-weight: 800; letter-spacing: -.01em; }
+:root[data-skin="teen"] .minicover, :root[data-skin="teen"] .cover { border-radius: 8px; }
+:root[data-skin="teen"] .ribbon { border-radius: 0; }
+/* chapters, steps, map */
+:root[data-skin="teen"] .chrow .num { border-radius: 12px; border-width: 2.5px; }
+:root[data-skin="teen"] .stephead .ico { border-radius: 12px; border-width: 2.5px; }
+:root[data-skin="teen"] .step.next { background: #FFD43B; }
+:root[data-skin="teen"] .mapwrap { border-width: 2.5px; border-radius: 18px; box-shadow: 6px 6px 0 var(--ink); }
+:root[data-skin="teen"] .node { border-width: 2.5px; }
+/* story */
+:root[data-skin="teen"] :is(.bubble, .narr) { border-width: 2.5px; border-radius: 14px; box-shadow: 5px 5px 0 #16112F; font-weight: 600; }
+:root[data-skin="teen"] .tag { border-radius: 6px; background: #5B2EFF; color: #FFFFFF; }
+:root[data-skin="teen"] .gl { background: rgba(255,212,59,.7); border-radius: 2px; }
+/* quiz */
+:root[data-skin="teen"] .opt { border-radius: 12px; }
+:root[data-skin="teen"] .opt .let { border-radius: 8px; background: #FFD43B; }
+:root[data-skin="teen"] .dots i { border-radius: 0; border-width: 2px; }
+:root[data-skin="teen"] .toast { border-radius: 10px; }
+:root[data-skin="teen"] .rank { border-radius: 8px; background: #16112F; color: #FFD43B; }
+
+/* ---------- ADULT: a calm reading room ---------- */
+:root[data-skin="adult"] {
+  --bg: #EEF1EC; --dot: #EEF1EC; --card: #FFFFFF; --ink: #1D2B27; --soft: #5E6B66;
+  --gold: #D9AC4F; --ember: #C2703F; --leaf: #2E8B62; --sky: #2C6B5C; --royal: #24584A; --berry: #A8476A;
+  --good: #2E8B62; --oops: #C2463F; --track: #DDE4DE;
+  --font: "Figtree", system-ui, sans-serif; --word: "Literata", Georgia, serif;
+  --line: rgba(29,43,39,.14);
+}
+:root[data-skin="adult"] body { background-color: var(--bg); background-image: none; }
+:root[data-skin="adult"] :is(.t-xl, .t-l, .t-m, b) { font-weight: 700; }
+:root[data-skin="adult"] .t-l { letter-spacing: -.01em; }
+:root[data-skin="adult"] .t-s { font-weight: 500; }
+:root[data-skin="adult"] .btn { border: 1.5px solid var(--line); border-radius: 12px; box-shadow: 0 1px 2px rgba(29,43,39,.08); font-weight: 700; }
+:root[data-skin="adult"] .btn:active { transform: translateY(1px); box-shadow: none; }
+:root[data-skin="adult"] .btn.go { background: var(--royal); color: #FFFFFF; border-color: var(--royal); }
+:root[data-skin="adult"] .btn.royal { background: var(--royal); }
+:root[data-skin="adult"] .btn[aria-pressed="true"] { background: var(--royal); color: #FFFFFF; border-color: var(--royal); }
+:root[data-skin="adult"] .card { border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 1px 2px rgba(29,43,39,.05), 0 12px 30px -20px rgba(29,43,39,.4); }
+:root[data-skin="adult"] .pill, :root[data-skin="adult"] .statrow span { border: 1px solid var(--line); }
+:root[data-skin="adult"] .iconbtn { border-radius: 50%; }
+:root[data-skin="adult"] :is(.chrow .num, .stephead .ico, .node, .opt .let, .dots i, .sticker i, .swatch, .seal, .textin, select) { border-width: 1.5px; border-color: var(--line); }
+:root[data-skin="adult"] .chrow .num { background: #F4E7C8; color: var(--ink); }
+:root[data-skin="adult"] .stephead .ico { background: #F4E7C8; border-radius: 14px; }
+:root[data-skin="adult"] .step.next { background: #F4E7C8; color: var(--ink); }
+:root[data-skin="adult"] .choicegrid .btn[aria-pressed="true"], :root[data-skin="adult"] .lookgrid .btn[aria-pressed="true"], :root[data-skin="adult"] .sopt[aria-pressed="true"] { background: #F4E7C8; color: var(--ink); box-shadow: 0 0 0 2px var(--royal); }
+/* home: a quiet evening study */
+:root[data-skin="adult"] #s-home { color: #F3F1EA; background: linear-gradient(180deg, #17302A 0%, #22453C 55%, #2E5A4E 100%); }
+:root[data-skin="adult"] .lobbysky::before { background: radial-gradient(circle, rgba(217,172,79,.28), rgba(217,172,79,0) 62%); }
+:root[data-skin="adult"] .lobbysky::after { display: none; }
+:root[data-skin="adult"] :is(.glass, .glassbtn) { background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.22); }
+:root[data-skin="adult"] .continue { background: #FBFAF6; color: #1D2B27; border-radius: 16px; box-shadow: 0 18px 40px -16px rgba(0,0,0,.5); }
+:root[data-skin="adult"] .ctag { color: #24584A; font-weight: 700; }
+:root[data-skin="adult"] .cinfo b { font-style: normal; font-weight: 600; }
+:root[data-skin="adult"] .cbar { height: 4px; background: #E3E6E0; }
+:root[data-skin="adult"] .cbar i { background: #24584A; }
+:root[data-skin="adult"] .cgo { background: #24584A; color: #FFFFFF; }
+:root[data-skin="adult"] .door { border-radius: 16px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.2); }
+:root[data-skin="adult"] .door em { background: #D9AC4F; color: #1D2B27; }
+:root[data-skin="adult"] .votd blockquote { font-style: normal; font-weight: 500; }
+/* library and reading */
+:root[data-skin="adult"] :is(.shelf h3, .bigcover .bt, .minicover, .aboutp, .versebox, .certpaper .cq, .btag, .booksheet .bt) { font-style: normal; }
+:root[data-skin="adult"] [style*="font-style:italic"] { font-style: normal !important; }
+:root[data-skin="adult"] .shelf h3 { font-weight: 600; letter-spacing: -.01em; }
+:root[data-skin="adult"] .bookbtn .bigcover { border-radius: 3px 8px 8px 3px; box-shadow: inset 6px 0 0 rgba(0,0,0,.18), 0 10px 24px -14px rgba(0,0,0,.55); }
+:root[data-skin="adult"] .bigcover .bt { font-weight: 600; }
+:root[data-skin="adult"] .mapwrap { border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 12px 30px -20px rgba(29,43,39,.45); }
+:root[data-skin="adult"] :is(.bubble, .narr) { font-family: var(--word); font-weight: 500; border: 1px solid rgba(29,43,39,.18); border-radius: 14px; box-shadow: 0 12px 30px -16px rgba(0,0,0,.5); }
+:root[data-skin="adult"] .bubble .nm { font-family: var(--font); }
+:root[data-skin="adult"] .bubble::before { border-right-color: #FFFFFF; }
+:root[data-skin="adult"] .tag { font-family: var(--font); background: #24584A; color: #FFFFFF; }
+:root[data-skin="adult"] .gl { background: rgba(217,172,79,.28); border-bottom: 2px solid #B98A2E; }
+:root[data-skin="adult"] .qcard { font-weight: 700; }
+:root[data-skin="adult"] .opt { font-weight: 600; }
+:root[data-skin="adult"] .opt .let { background: #F1F3EF; }
+:root[data-skin="adult"] .rank { background: #24584A; color: #F4E7C8; }
+:root[data-skin="adult"] .toast { border-radius: 10px; }
+
+/* ---------- dark mode for each look ---------- */
+:root[data-skin="kid"][data-theme="dark"] { --bg: #142250; --dot: #1C2D63; --card: #20336E; --ink: #FFF6E6; --soft: #C7D0F7; --track: #2D4180; }
+:root[data-skin="teen"][data-theme="dark"] { --bg: #110D28; --dot: #1C1740; --card: #1E1946; --ink: #F5F2FF; --soft: #BEB7EA; --track: #2C2560; }
+:root[data-skin="adult"][data-theme="dark"] { --bg: #131B19; --dot: #131B19; --card: #1C2724; --ink: #E7EEEA; --soft: #A6B4AE; --track: #2A3632; --line: rgba(231,238,234,.16); }
+@media (prefers-color-scheme: dark) {
+  :root[data-skin="kid"]:not([data-theme="light"]) { --bg: #142250; --dot: #1C2D63; --card: #20336E; --ink: #FFF6E6; --soft: #C7D0F7; --track: #2D4180; }
+  :root[data-skin="teen"]:not([data-theme="light"]) { --bg: #110D28; --dot: #1C1740; --card: #1E1946; --ink: #F5F2FF; --soft: #BEB7EA; --track: #2C2560; }
+  :root[data-skin="adult"]:not([data-theme="light"]) { --bg: #131B19; --dot: #131B19; --card: #1C2724; --ink: #E7EEEA; --soft: #A6B4AE; --track: #2A3632; --line: rgba(231,238,234,.16); }
+  :root[data-skin="kid"]:not([data-theme="light"]) body { background-image: none; }
+}
+:root[data-skin="kid"][data-theme="dark"] body { background-image: none; }
+
 /* ===== per-book themes ===== */
 body[data-book="pq"] { --bg: #EAF5EE; --dot: #CFE8D2; --royal: #0E6B5C; --gold: #F2C14E; --sky: #1FA38A; --track: #CFE8D2;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56'%3E%3Cpath d='M14 18c6-10 18-8 18-8s-2 12-12 14c-4 1-6-6-6-6z' fill='%23CFE8D2'/%3E%3Cpath d='M40 44c-6-6-2-16-2-16s10 4 8 12c-1 4-6 4-6 4z' fill='%23D9EEDC'/%3E%3C/svg%3E"); background-size: 56px 56px; background-position: 0 0; }
@@ -692,41 +973,50 @@ canvas#confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-
 <div class="app" id="app">
 
   <!-- WELCOME / SIGN-UP -->
-  <section class="screen" id="s-welcome" aria-label="Make your player">
-    <div class="cols">
-      <div class="colA hero">
-        <div class="avbox" id="wPreview" style="--s:clamp(90px,22cqmin,190px)"></div>
-        <h1 class="title">Lead Quest</h1>
-        <p class="tagline">Great books. Brave choices. Real leaders.</p>
-        <div class="card welcomecard"><div class="seal">AA</div><div><p class="who">A welcome from Dr. Arowolo Ayoola</p>
-          <p>Hello, future leader! Leaders are made one brave choice at a time. Walk with the heroes of great books, learn from their wins and their mistakes, and discover the leader in you. Let's go!</p></div></div>
-      </div>
-      <div class="colB">
-        <div class="stepdots" id="stepDots"><i></i><i></i><i></i><i></i><i></i></div>
-        <div class="wstep" data-step="0">
-          <label for="nameIn">What's your name?</label>
-          <input id="nameIn" class="textin" maxlength="14" autocomplete="off" placeholder="Your name">
-          <p class="hint" id="wHint" role="status"></p>
+  <section class="screen" id="s-welcome" aria-label="Welcome">
+    <div class="wstep land" data-step="0">
+      <div class="landsky" aria-hidden="true"></div>
+      <header class="landhead">
+        <button class="landback" id="wBack0" type="button">◀ Back</button>
+        <p class="landmark" aria-hidden="true">📖</p>
+        <h1 class="landlogo">Lead Quest</h1>
+        <p class="landtag">Great books. Brave choices. Real leaders.</p>
+      </header>
+      <form class="landform" id="landForm" novalidate onsubmit="return false">
+        <p class="landhello" id="landHello">Welcome! Tell us a little about yourself and we'll set things up for you.</p>
+        <div class="fld"><label for="nameIn">First name</label>
+          <input id="nameIn" class="lin" maxlength="14" autocomplete="off" autocapitalize="words" placeholder="Your first name"></div>
+        <div class="fld"><span class="flbl" id="ageLbl">Age</span>
+          <div class="agechips" id="agePick" role="group" aria-labelledby="ageLbl"></div>
+          <p class="agehint" id="ageHint" aria-live="polite"></p></div>
+        <div class="fld"><span class="flbl" id="gLbl">I'm a</span>
+          <div class="seg" id="genderPick" role="group" aria-labelledby="gLbl"></div></div>
+        <div class="fld"><label for="countryIn">Country</label>
+          <select id="countryIn" class="lin"></select></div>
+        <div class="fld"><label for="emailIn" id="emailLbl">Parent or guardian's email <small>optional</small></label>
+          <input id="emailIn" class="lin" type="email" inputmode="email" autocomplete="email" placeholder="name@example.com">
+          <label class="consentrow" id="consentRow"><input type="checkbox" id="consentIn"> <span id="consentTxt">I'm the parent or guardian. Dr. Ayoola may email me now and then. I can unsubscribe at any time.</span></label>
+          <button class="linkbtn" id="wPrivacy" type="button">How we use emails</button></div>
+        <p class="hint" id="wHint" role="status"></p>
+        <button class="landgo" id="wNext" type="button">Continue</button>
+      </form>
+      <button class="maker" data-about="1">Developed by Dr. Arowolo Ayoola</button>
+    </div>
+    <div class="wstep pick" data-step="1">
+      <div class="topbar"><button class="btn iconbtn" id="wBack" aria-label="Back">◀</button><h2 class="t-l" id="lookTitle">Pick your look</h2></div>
+      <div class="cols">
+        <div class="colA hero">
+          <div class="avbox" id="wPreview" style="--s:clamp(110px,26cqmin,210px)"></div>
+          <div class="card welcomecard"><div class="seal">AA</div><div><p class="who">A welcome from Dr. Arowolo Ayoola</p>
+            <p id="welcomeMsg">Hello, future leader! Leaders are made one brave choice at a time. Walk with the heroes of great books, learn from their wins and their mistakes, and discover the leader in you. Let's go!</p></div></div>
         </div>
-        <div class="wstep" data-step="1">
-          <label for="countryIn">Where do you live?</label>
-          <select id="countryIn" class="textin" style="font-size:clamp(18px,4.6cqmin,28px)"></select>
-          <label for="emailIn" style="margin-top:8px">Parent or guardian's email <small>(optional)</small></label>
-          <input id="emailIn" class="textin" type="email" inputmode="email" autocomplete="email" placeholder="parent@example.com" style="font-size:clamp(17px,4.4cqmin,26px)">
-          <label class="consentrow" id="consentRow"><input type="checkbox" id="consentIn"> <span>I'm the parent or guardian. Dr. Ayoola may email me now and then. I can unsubscribe at any time.</span></label>
-          <p class="hint" id="wHint2" role="status"></p>
-          <div class="row" style="justify-content:center;gap:4px"><button class="maker" id="wSkipEmail" type="button">Skip for now</button><button class="maker" id="wPrivacy" type="button">How we use it</button></div>
-        </div>
-        <div class="wstep" data-step="2"><p class="lbl">Are you a boy or a girl?</p><div class="choicegrid" id="genderPick"></div></div>
-        <div class="wstep" data-step="3"><p class="lbl">How old are you?</p><div class="choicegrid ages" id="agePick"></div></div>
-        <div class="wstep" data-step="4"><p class="lbl">Pick your look</p><div class="lookgrid" id="lookPick"></div><p class="t-s" style="text-align:center">You can change everything later in the Dress-up studio.</p></div>
-        <div class="wnav">
-          <button class="btn iconbtn" id="wBack" aria-label="Back">◀</button>
-          <button class="btn go" id="wNext">Next</button>
+        <div class="colB">
+          <div class="lookgrid" id="lookPick"></div>
+          <p class="t-s" style="text-align:center">You can change everything later in the Dress-up studio.</p>
+          <div class="wnav"><button class="btn go" id="wGo">Let's go!</button></div>
         </div>
       </div>
     </div>
-    <button class="maker" data-about="1">Developed by Dr. Arowolo Ayoola</button>
   </section>
 
   <!-- WHO'S PLAYING -->
@@ -774,7 +1064,8 @@ canvas#confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-
     <div class="topbar"><button class="btn iconbtn" data-back="home" aria-label="Back">◀</button><h2 class="t-l">My profile</h2></div>
     <div class="cols">
       <div class="colA profhead"><div class="avbox" id="pfAvatar"></div><p class="t-l" id="pfName"></p><span class="rank" id="pfRank"></span><p class="t-s" id="pfMeta"></p>
-        <div class="statrow" id="pfStats"></div></div>
+        <div class="statrow" id="pfStats"></div>
+        <div class="stylepick" id="pfStyle" role="group" aria-label="App look"></div></div>
       <div class="colB"><div class="tiles" id="pfTiles">
         <button class="btn tile" data-go="studio"><span class="ico">🎨</span><b>Dress up</b><span>Spend your coins</span></button>
         <button class="btn tile" data-go="treasure"><span class="ico">🏆</span><b>Treasure room</b><span>Crowns, stickers, certificates</span></button>
@@ -2338,6 +2629,7 @@ function show(id) {
   document.querySelectorAll(".screen").forEach((s) => s.classList.toggle("on", s.id === sid));
   if (sid !== "s-about") PREV = CUR;
   CUR = sid;
+  applySkin(sid);
   document.body.classList.toggle("royal", sid === "s-crown");
   const bibleScreens = ["s-bible", "s-bbook", "s-reader", "s-episode", "s-puzzle", "s-cards", "s-blessings"], ownScreens = ["s-book", "s-chapter", "s-stop"], shared = ["s-story", "s-verse", "s-quiz", "s-result", "s-crown", "s-cert", "s-myblessing"];
   if (bibleScreens.includes(sid)) ctxBible = true; else if (ownScreens.includes(sid)) ctxBible = false;
@@ -2386,47 +2678,72 @@ const LOOKS = {
   girl: [{ skin: 1, hair: "puffs", top: "#E8457E" }, { skin: 3, hair: "braids", top: "#7A4FE0" }, { skin: 2, hair: "afro", top: "#FFC83D" }, { skin: 4, hair: "bun", top: "#3FA9F5" }, { skin: 0, hair: "long", top: "#22A36A" }, { skin: 2, hair: "low", top: "#FF6B3D", head: "gele" }, { skin: 3, hair: "puffs", top: "#1F1A4A", extra: "glasses" }, { skin: 1, hair: "cornrows", top: "#E8457E" }]
 };
 const fullLook = (l) => Object.assign({ skin: 2, hair: "low", hc: "#1B1B1B", top: "#3FA9F5", pat: "plain", head: "none", extra: "none", bg: "#FFC83D" }, l);
+/* ---------- age looks: 12 and under = "kid", 13-18 = "teen", 19+ = "adult" ---------- */
+const skinForAge = (a) => !a ? "teen" : a <= 12 ? "kid" : a <= 18 ? "teen" : "adult";
+const SKIN_INFO = {
+  kid: { name: "Playful", note: "🎈 You'll get the playful look: bright, bouncy and fun." },
+  teen: { name: "Bold", note: "⚡ You'll get the bold look: fresh, sharp and full of energy." },
+  adult: { name: "Calm", note: "📖 You'll get the calm look: clear, quiet and easy to read." }
+};
+function playerSkin(p) { p = p || P(); if (!p) return "teen"; return p.skin && p.skin !== "auto" ? p.skin : skinForAge(p.age); }
+function applySkin(sid) {
+  const el = document.documentElement;
+  if (sid === "s-welcome" && typeof W !== "undefined" && W && W.step === 0) el.dataset.skin = "land";
+  else if (sid === "s-welcome" && typeof W !== "undefined" && W) el.dataset.skin = W.edit && P() && P().skin && P().skin !== "auto" ? P().skin : skinForAge(W.age);
+  else el.dataset.skin = playerSkin();
+}
 function openWelcome(edit) {
   const p = edit ? P() : null;
   W = { step: 0, name: p ? p.name : "", country: (p && p.country) || "Nigeria", email: (p && p.email) || "", gender: p ? p.gender : null, age: p ? p.age : null, look: p ? p.look : null, edit: !!edit };
   $("nameIn").value = W.name; $("countryIn").innerHTML = COUNTRIES.map((c) => `<option ${c === W.country ? "selected" : ""}>${esc(c)}</option>`).join(""); $("emailIn").value = W.email; show("welcome");
 }
 ROUTES["s-welcome"] = () => renderWelcome();
+const AGES = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19];
 function renderWelcome() {
   document.querySelectorAll(".wstep").forEach((s) => s.classList.toggle("on", +s.dataset.step === W.step));
-  [...$("stepDots").children].forEach((d, i) => d.classList.toggle("on", i <= W.step));
-  $("wBack").style.visibility = W.step === 0 && !DB.players.length ? "hidden" : "visible";
-  $("wNext").textContent = W.step === 4 ? (W.edit ? "Save ✓" : "Let's go! ▶") : "Next ▶";
+  applySkin("s-welcome");
+  $("wBack0").hidden = !(W.edit || DB.players.length);
+  $("landHello").textContent = W.edit ? "Update your details below." : DB.players.length ? "A new player! Tell us a little about them." : "Welcome! Tell us a little about yourself and we'll set things up for you.";
+  $("wNext").textContent = W.edit ? "Next" : "Continue";
+  $("wGo").textContent = W.edit ? "Save" : "Let's go!";
   $("wPreview").innerHTML = avatarSVG(fullLook(W.look || { skin: 2, hair: W.gender === "girl" ? "puffs" : "low", top: "#3FA9F5" }), { e: "big" });
-  $("genderPick").innerHTML = [["boy", "👦 Boy"], ["girl", "👧 Girl"]].map(([v, l]) => `<button class="btn" data-g="${v}" aria-pressed="${W.gender === v}">${l}</button>`).join("");
-  $("agePick").innerHTML = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18].map((a) => `<button class="btn" data-a="${a}" aria-pressed="${W.age === a}">${a}</button>`).join("");
+  $("genderPick").innerHTML = [["boy", "Boy"], ["girl", "Girl"]].map(([v, l]) => `<button type="button" data-g="${v}" aria-pressed="${W.gender === v}">${l}</button>`).join("");
+  $("agePick").innerHTML = AGES.map((a) => `<button type="button" data-a="${a}" aria-pressed="${W.age === a || (a === 19 && W.age > 19)}" aria-label="${a === 19 ? "19 or older" : a}">${a === 19 ? "19+" : a}</button>`).join("");
+  const adult = W.age >= 18;
+  $("ageHint").textContent = W.age ? SKIN_INFO[skinForAge(W.age)].note : "";
+  $("emailLbl").innerHTML = (adult ? "Your email" : "Parent or guardian's email") + " <small>optional</small>";
+  $("consentTxt").textContent = adult ? "Dr. Ayoola may email me now and then. I can unsubscribe at any time." : "I'm the parent or guardian. Dr. Ayoola may email me now and then. I can unsubscribe at any time.";
+  const sk = skinForAge(W.age);
+  $("lookTitle").textContent = sk === "kid" ? `Hi ${W.name || "friend"}! Pick your look` : sk === "adult" ? "Choose your avatar" : `Pick your look, ${W.name || "friend"}`;
   const set = LOOKS[W.gender || "boy"];
   $("lookPick").innerHTML = set.map((l, i) => `<button class="btn" data-l="${i}" aria-pressed="${W.look && W.look._i === i}" aria-label="Look ${i + 1}"><div class="avbox" style="--s:100%">${avatarSVG(fullLook(l))}</div></button>`).join("");
-  $("wHint").textContent = ""; $("wHint2").textContent = "";
-  if (W.step === 0) setTimeout(() => $("nameIn").focus(), 50);
+  $("wHint").textContent = "";
+  if (W.step === 0 && !W.edit && !W.name) setTimeout(() => $("nameIn").focus(), 50);
 }
-$("genderPick").onclick = (e) => { const b = e.target.closest("[data-g]"); if (!b) return; sfx.tap(); if (W.gender !== b.dataset.g) W.look = null; W.gender = b.dataset.g; renderWelcome(); };
-$("agePick").onclick = (e) => { const b = e.target.closest("[data-a]"); if (!b) return; sfx.tap(); W.age = +b.dataset.a; renderWelcome(); };
+const wKeep = () => { W.name = $("nameIn").value.trim(); W.country = $("countryIn").value; W.email = $("emailIn").value.trim(); };
+$("genderPick").onclick = (e) => { const b = e.target.closest("[data-g]"); if (!b) return; sfx.tap(); wKeep(); if (W.gender !== b.dataset.g) W.look = null; W.gender = b.dataset.g; renderWelcome(); };
+$("agePick").onclick = (e) => { const b = e.target.closest("[data-a]"); if (!b) return; sfx.tap(); wKeep(); W.age = +b.dataset.a; renderWelcome(); };
 $("lookPick").onclick = (e) => { const b = e.target.closest("[data-l]"); if (!b) return; sfx.tap(); const i = +b.dataset.l; W.look = Object.assign(fullLook(LOOKS[W.gender || "boy"][i]), { _i: i }); renderWelcome(); };
-$("nameIn").addEventListener("keydown", (e) => { if (e.key === "Enter") $("wNext").click(); });
-$("wBack").onclick = () => { if (W.step > 0) { W.step--; renderWelcome(); } else show(W.edit ? "profile" : "players"); };
-$("emailIn").addEventListener("keydown", (e) => { if (e.key === "Enter") $("wNext").click(); });
-$("wSkipEmail").onclick = () => { W.country = $("countryIn").value; W.email = ""; $("emailIn").value = ""; W.step++; renderWelcome(); };
+$("nameIn").addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); $("agePick").querySelector("button").focus(); } });
+$("wBack0").onclick = () => show(W.edit ? "profile" : "players");
+$("wBack").onclick = () => { W.step = 0; renderWelcome(); };
 $("wNext").onclick = () => {
-  if (W.step === 0) { const n = $("nameIn").value.trim(); if (!n) { $("wHint").textContent = "Type your name first."; return; } W.name = n.charAt(0).toUpperCase() + n.slice(1); }
-  if (W.step === 1) { W.country = $("countryIn").value; const em = $("emailIn").value.trim(); if (em && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em)) { $("wHint2").textContent = "That email doesn't look right. Check it, or add it later."; return; } W.email = em; }
-  if (W.step === 2 && !W.gender) { toast("Tap Boy or Girl"); return; }
-  if (W.step === 3 && !W.age) { toast("Tap your age"); return; }
-  if (W.step === 4) {
-    if (!W.look) W.look = fullLook(LOOKS[W.gender][0]);
-    const look = Object.assign({}, W.look); delete look._i;
-    if (W.edit) { const p = P(); const changedG = p.gender !== W.gender; Object.assign(p, { name: W.name, country: W.country, email: W.email, gender: W.gender, age: W.age }); if (changedG && (p.title === "King" || p.title === "Queen")) p.title = W.gender === "girl" ? "Queen" : "King"; if (W.look._i !== undefined) p.look = look; save(); toast("Profile saved"); show("profile"); return; }
-    const p = newPlayer(W.name, W.gender, W.age, look); p.country = W.country; p.email = W.email; DB.players.push(p); DB.current = p.id; save();
-    sfx.win(); burst(); show("home");
-    setTimeout(() => speak(`Welcome, ${p.name}! ${WELCOME_MSG}`, { rate: .95 }), 400);
-    return;
-  }
-  W.step++; renderWelcome();
+  const hint = (t) => { $("wHint").textContent = t; };
+  wKeep();
+  if (!W.name) { hint("Type your first name."); $("nameIn").focus(); return; }
+  W.name = W.name.charAt(0).toUpperCase() + W.name.slice(1);
+  if (!W.age) { hint("Tap your age."); return; }
+  if (!W.gender) { hint("Tap Boy or Girl."); return; }
+  if (W.email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(W.email)) { hint("That email doesn't look right. Check it, or leave it empty."); return; }
+  sfx.tap(); W.step = 1; renderWelcome();
+};
+$("wGo").onclick = () => {
+  if (!W.look) W.look = fullLook(LOOKS[W.gender][0]);
+  const look = Object.assign({}, W.look); delete look._i;
+  if (W.edit) { const p = P(); const changedG = p.gender !== W.gender; Object.assign(p, { name: W.name, country: W.country, email: W.email, gender: W.gender, age: W.age }); if (changedG && (p.title === "King" || p.title === "Queen")) p.title = W.gender === "girl" ? "Queen" : "King"; if (W.look._i !== undefined) p.look = look; save(); toast("Profile saved"); show("profile"); return; }
+  const p = newPlayer(W.name, W.gender, W.age, look); p.country = W.country; p.email = W.email; DB.players.push(p); DB.current = p.id; save();
+  sfx.win(); burst(); show("home");
+  setTimeout(() => speak(`Welcome, ${p.name}! ${WELCOME_MSG}`, { rate: .95 }), 400);
 };
 
 /* =========================== players =========================== */
@@ -2519,7 +2836,10 @@ ROUTES["s-profile"] = () => {
   const tr = topRank(p); $("pfRank").textContent = tr ? `${tr.rank} ${tr.badge.icon}` : "Pilgrim in training";
   $("pfMeta").textContent = [p.country, p.age ? `${p.age} years old` : "", p.email || "No email yet"].filter(Boolean).join(" · ");
   $("pfStats").innerHTML = `<span>⭐ ${totalStars(p)} stars</span><span>🪙 ${p.coins} coins</span><span>📜 ${p.verses.length} verses</span><span>👑 ${p.badges.length} badges</span>`;
+  const cur = p.skin || "auto", auto = SKIN_INFO[skinForAge(p.age)].name;
+  $("pfStyle").innerHTML = `<span>App look</span>` + [["auto", `Auto (${auto})`], ["kid", "Playful"], ["teen", "Bold"], ["adult", "Calm"]].map(([v, l]) => `<button type="button" data-sk="${v}" aria-pressed="${cur === v}">${l}</button>`).join("");
 };
+$("pfStyle").onclick = (e) => { const b = e.target.closest("[data-sk]"); if (!b) return; sfx.tap(); const p = P(); p.skin = b.dataset.sk; save(); applySkin(CUR); ROUTES["s-profile"](); };
 $("pfTiles").onclick = (e) => { const b = e.target.closest("[data-go]"); if (!b) return; sfx.tap(); const g = b.dataset.go;
   if (g === "edit") openWelcome(true); else if (g === "gate") openGate(); else show(g); };
 
@@ -4440,7 +4760,7 @@ setTimeout(() => { try { if (P()) { const c = currentChapter(); if (c && c.book.
    ========================================================= */
 const REG_URL = "https://script.google.com/macros/s/AKfycbyawJFxLkPXBwe3-qKQ3N6OajQNLhZa2c2iQsGOkHi9IKfrqrB4MxKIlGUs03qYurkE/exec";
 const REG_KEY = "lq-2026";
-const APP_VER = "v46";
+const APP_VER = "v47";
 const REG_EPOCH = 2;   /* raise this to make every device send its registration again */
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
@@ -4501,20 +4821,20 @@ setTimeout(() => { regCheck(); _saveBeforeReg(); regFlush(); }, 4000);
 /* ---------- welcome screens: consent before an email is kept ---------- */
 const _openWelcomeReg = openWelcome;
 openWelcome = function (edit) { _openWelcomeReg(edit); const p = edit ? P() : null; W.consent = !!(p && p.consent); $("consentIn").checked = W.consent; };
-$("emailIn").addEventListener("input", () => { $("wHint2").textContent = ""; });
-const _wSkip = $("wSkipEmail").onclick;
-$("wSkipEmail").onclick = () => { W.consent = false; $("consentIn").checked = false; _wSkip(); };
+$("emailIn").addEventListener("input", () => { $("wHint").textContent = ""; });
 $("wPrivacy").onclick = () => { PREV = "s-welcome"; show("privacy"); };
 const _wNextReg = $("wNext").onclick;
 $("wNext").onclick = () => {
-  if (W.step === 1) {
-    const em = $("emailIn").value.trim();
-    if (em && EMAIL_RE.test(em) && !$("consentIn").checked) { $("wHint2").textContent = "Please ask a parent or guardian to tick the box, or tap Skip for now."; return; }
-    W.consent = !!em && $("consentIn").checked;
-  }
-  const was = W.step, edit = W.edit;
+  const em = $("emailIn").value.trim();
+  if (em && EMAIL_RE.test(em) && !$("consentIn").checked) { $("wHint").textContent = (W.age >= 18 ? "Tick the box to let Dr. Ayoola email you" : "Please ask a parent or guardian to tick the box") + ", or leave the email empty."; return; }
+  W.consent = !!em && $("consentIn").checked;
   _wNextReg();
-  if (was === 4 && P()) {
+};
+const _wGoReg = $("wGo").onclick;
+$("wGo").onclick = () => {
+  const edit = W.edit;
+  _wGoReg();
+  if (P()) {
     const p = P();
     if (W.consent && !p.consent) p.consentAt = Date.now();
     p.consent = W.consent;
