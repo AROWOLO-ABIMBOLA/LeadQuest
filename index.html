@@ -695,6 +695,32 @@ textarea { min-height: 70px; resize: vertical; }
 }
 :root[data-skin="kid"][data-theme="dark"] body { background-image: none; }
 
+
+/* ---------- who's playing (shared, warm, before any one player's look) ---------- */
+#s-players { padding: 0; background: linear-gradient(180deg, #FFE1C2 0%, #FFF0E0 34%, #FFFAF4 100%); color: #3B2346; font-family: "Figtree", system-ui, sans-serif; }
+.plwrap { position: relative; flex: 1; display: flex; flex-direction: column; align-items: center; gap: 14px; padding: clamp(18px, 4cqh, 48px) 16px 20px; overflow-y: auto; text-align: center; }
+.pltitle { font: 800 clamp(30px, 8cqmin, 52px)/1 "Figtree", sans-serif; letter-spacing: -.03em; color: #3B2346; }
+.plsub { font: 600 16px/1.4 "Figtree", sans-serif; color: #7A5A62; max-width: 420px; }
+#s-players .playergrid { flex: none; width: 100%; max-width: 720px; display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); overflow: visible; padding: 6px 2px; }
+.pcard { position: relative; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 16px 10px 14px; background: #FFFFFF; border: 1.5px solid #EBD8C6; border-radius: 20px; color: #3B2346; font-family: "Figtree", sans-serif; box-shadow: 0 14px 30px -22px rgba(138,82,68,.55); transition: transform .12s; }
+.pcard:hover { transform: translateY(-2px); }
+.pcard:active { transform: scale(.97); }
+.pcard:focus-visible { outline: 3px solid #E39A4A; outline-offset: 3px; }
+.pcard .pav { width: clamp(76px, 18cqmin, 108px); aspect-ratio: 1; border-radius: 50%; padding: 4px; margin-bottom: 6px; }
+.pcard .pav .av { border-radius: 50%; }
+.pcard.sk-kid .pav { background: conic-gradient(#FFC93C, #FF6FAE, #2EAEFF, #35C96A, #FFC93C); }
+.pcard.sk-teen .pav { background: #5B2EFF; }
+.pcard.sk-adult .pav { background: #24584A; }
+.pcard b { font-size: 19px; font-weight: 800; }
+.pcard small { font-size: 13px; font-weight: 600; color: #8A6A70; }
+.pcard em { position: absolute; top: 10px; right: 10px; font-style: normal; font-size: 11px; font-weight: 800; background: #3B2346; color: #FFFFFF; border-radius: 999px; padding: 2px 8px; }
+.pcard.now { border-color: #3B2346; border-width: 2px; }
+.pladd { font: 800 18px "Figtree", sans-serif; color: #FFFFFF; background: #3B2346; border: 0; border-radius: 16px; padding: 14px 26px; box-shadow: 0 5px 0 #22122B; margin-top: 4px; }
+.pladd:active { transform: translateY(4px); box-shadow: 0 1px 0 #22122B; }
+.plback { background: none; border: 0; font: 700 15px "Figtree", sans-serif; color: #7A5A6A; text-decoration: underline; text-underline-offset: 3px; padding: 6px; }
+.pladd:focus-visible, .plback:focus-visible { outline: 3px solid #E39A4A; outline-offset: 2px; }
+.switchbtn { display: inline-flex; align-items: center; gap: 4px; color: inherit; cursor: pointer; }
+@container app (max-width: 380px) { .switchbtn span { display: none; } }
 /* ===== per-book themes ===== */
 body[data-book="pq"] { --bg: #EAF5EE; --dot: #CFE8D2; --royal: #0E6B5C; --gold: #F2C14E; --sky: #1FA38A; --track: #CFE8D2;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56'%3E%3Cpath d='M14 18c6-10 18-8 18-8s-2 12-12 14c-4 1-6-6-6-6z' fill='%23CFE8D2'/%3E%3Cpath d='M40 44c-6-6-2-16-2-16s10 4 8 12c-1 4-6 4-6 4z' fill='%23D9EEDC'/%3E%3C/svg%3E"); background-size: 56px 56px; background-position: 0 0; }
@@ -1021,10 +1047,15 @@ canvas#confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-
 
   <!-- WHO'S PLAYING -->
   <section class="screen" id="s-players" aria-label="Who's playing?">
-    <div class="topbar"><button class="btn iconbtn" id="plBack" aria-label="Back">◀</button><h2 class="t-l">Who's playing?</h2></div>
-    <p class="t-s" style="flex:none">Tap your name. Each player has their own journey, stars, crowns and messages.</p>
-    <div class="playergrid" id="playerGrid"></div>
-    <button class="btn go" id="addChild" style="flex:none">➕ Add a player</button>
+    <div class="landsky" aria-hidden="true"></div>
+    <div class="plwrap">
+      <p class="landmark" aria-hidden="true">📖</p>
+      <h2 class="pltitle">Who's playing today?</h2>
+      <p class="plsub">Tap your name to carry on. Each player keeps their own books, stars and look.</p>
+      <div class="playergrid" id="playerGrid"></div>
+      <button class="pladd" id="addChild" type="button">＋ Add a player</button>
+      <button class="plback" id="plBack" type="button">◀ Back to <span id="plBackName"></span></button>
+    </div>
   </section>
 
   <!-- HOME / LOBBY -->
@@ -1034,6 +1065,7 @@ canvas#confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-
       <button class="me" id="hMe" aria-label="My profile"><span class="avbox" id="hAvatar"></span><span class="metext"><span id="hGreet">Good evening</span><b id="hHi">Friend</b><span id="hRank">Pilgrim in training</span></span></button>
       <span class="glass st">⭐ <span id="hStars">0</span></span>
       <span class="glass">🪙 <span id="hCoins">0</span></span>
+      <button class="glass switchbtn" id="hSwitch" aria-label="Switch player">👥 <span>Switch</span></button>
       <button class="glassbtn" id="hSound" aria-label="Sound on or off">🔊</button>
     </div>
     <div class="lobby">
@@ -1070,7 +1102,7 @@ canvas#confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-
         <button class="btn tile" data-go="studio"><span class="ico">🎨</span><b>Dress up</b><span>Spend your coins</span></button>
         <button class="btn tile" data-go="treasure"><span class="ico">🏆</span><b>Treasure room</b><span>Crowns, stickers, certificates</span></button>
         <button class="btn tile" data-go="verses"><span class="ico">📜</span><b>My verses</b><span>Scriptures you've learned</span></button>
-        <button class="btn tile" data-go="players"><span class="ico">👪</span><b>Switch player</b><span>Who's playing?</span></button>
+        <button class="btn tile" data-go="players"><span class="ico">👪</span><b>Switch player</b><span>Change or add a player</span></button>
         <button class="btn tile" data-go="edit"><span class="ico">✏️</span><b>Edit profile</b><span>Name, country, email</span></button>
         <button class="btn tile" data-go="gate"><span class="ico">🔒</span><b>Parent corner</b><span>Messages and settings</span></button>
       </div></div>
@@ -2690,6 +2722,7 @@ function applySkin(sid) {
   const el = document.documentElement;
   if (sid === "s-welcome" && typeof W !== "undefined" && W && W.step === 0) el.dataset.skin = "land";
   else if (sid === "s-welcome" && typeof W !== "undefined" && W) el.dataset.skin = W.edit && P() && P().skin && P().skin !== "auto" ? P().skin : skinForAge(W.age);
+  else if (sid === "s-players") el.dataset.skin = "land";
   else el.dataset.skin = playerSkin();
 }
 function openWelcome(edit) {
@@ -2748,12 +2781,14 @@ $("wGo").onclick = () => {
 
 /* =========================== players =========================== */
 ROUTES["s-players"] = () => {
-  $("playerGrid").innerHTML = DB.players.map((p) => `<button class="btn pcard" data-p="${p.id}"><div class="avbox">${avatarSVG(p.look, { crown: p.badges.length > 0, e: "big" })}</div><b>${esc(titled(p))}</b><small>⭐ ${totalStars(p)} · 🪙 ${p.coins}</small></button>`).join("");
-  $("plBack").style.visibility = P() ? "visible" : "hidden";
+  const lk = { kid: "Playful look", teen: "Bold look", adult: "Calm look" };
+  $("playerGrid").innerHTML = DB.players.map((p) => { const sk = playerSkin(p); return `<button class="pcard sk-${sk} ${p.id === DB.current ? "now" : ""}" data-p="${p.id}"><span class="pav">${avatarSVG(p.look, { crown: p.badges.length > 0, e: "big" })}</span><b>${esc(titled(p))}</b><small>${p.age ? (p.age >= 19 ? "19+" : `Age ${p.age}`) + " · " : ""}${lk[sk]}</small><small>⭐ ${totalStars(p)} · 🪙 ${p.coins}</small>${p.id === DB.current ? '<em>Playing now</em>' : ""}</button>`; }).join("");
+  const cur = P(); $("plBack").hidden = !cur; if (cur) $("plBackName").textContent = cur.name;
 };
 $("playerGrid").onclick = (e) => { const b = e.target.closest("[data-p]"); if (!b) return; DB.current = b.dataset.p; save(); sfx.tap(); show("home"); };
 $("addChild").onclick = () => openWelcome(false);
 $("plBack").onclick = () => show("home");
+$("hSwitch").onclick = () => { sfx.tap(); show("players"); };
 
 /* =========================== home =========================== */
 function nextThing(ch = currentChapter()) {
@@ -3287,7 +3322,7 @@ $("paInstall").onclick = async () => { if (installEvt) { installEvt.prompt(); tr
 if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost") && !/claude|anthropic/.test(location.hostname)) navigator.serviceWorker.register("sw.js").catch(() => {});
 
 /* =========================== start =========================== */
-if (P()) show("home"); else if (DB.players.length) show("players"); else openWelcome(false);
+if (DB.players.length > 1) show("players"); else if (P()) show("home"); else if (DB.players.length) show("players"); else openWelcome(false);
 </script>
 </body>
 </html>
@@ -4760,7 +4795,7 @@ setTimeout(() => { try { if (P()) { const c = currentChapter(); if (c && c.book.
    ========================================================= */
 const REG_URL = "https://script.google.com/macros/s/AKfycbyawJFxLkPXBwe3-qKQ3N6OajQNLhZa2c2iQsGOkHi9IKfrqrB4MxKIlGUs03qYurkE/exec";
 const REG_KEY = "lq-2026";
-const APP_VER = "v47";
+const APP_VER = "v48";
 const REG_EPOCH = 2;   /* raise this to make every device send its registration again */
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
