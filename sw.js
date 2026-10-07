@@ -2,7 +2,7 @@
    The game page is fetched fresh whenever there is internet, so updates you upload reach players
    the next time they open the game. All files sit side by side (no folders), so uploading is simple. Bible books (bible-<book>.js) are saved in their own store the first time they
    are opened, and are kept across updates, so families never need to download them twice. */
-const CACHE = "lead-quest-v48";
+const CACHE = "lead-quest-v49";
 const BIBLE = "lead-quest-bible-v2";
 const STORIES = "lead-quest-stories-v2";
 const BOOKPACKS = "lead-quest-books-v1";

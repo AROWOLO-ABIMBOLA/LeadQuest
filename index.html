@@ -1322,9 +1322,9 @@ canvas#confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-
       <div class="card"><h3>🌗 Light or dark</h3><select id="paTheme"><option value="auto">Match the device</option><option value="light">Light</option><option value="dark">Dark</option></select></div>
       <div class="card"><h3>📲 Install the app</h3><p>Add Lead Quest to the home screen. It works offline after the first visit.</p><button class="btn" id="paInstall">Install</button><p class="t-s" id="paInstallHint"></p></div>
       <div class="card" id="regCard"><h3>📧 Family registration</h3><p>Optional. Get occasional encouragement from Dr. Ayoola and news when new books arrive.</p>
-        <label for="paEmail" class="smlabel">Parent or guardian's email</label><input id="paEmail" class="textin smin" type="email" inputmode="email" autocomplete="email" placeholder="parent@example.com">
+        <label for="paEmail" class="smlabel" id="paEmailLbl">Parent or guardian's email</label><input id="paEmail" class="textin smin" type="email" inputmode="email" autocomplete="email" placeholder="parent@example.com">
         <label for="paPhone" class="smlabel">Phone or WhatsApp <small>(optional)</small></label><input id="paPhone" class="textin smin" type="tel" inputmode="tel" autocomplete="tel" placeholder="+234 800 000 0000">
-        <label class="consentrow"><input type="checkbox" id="paConsent"> <span>I'm the parent or guardian and I agree to receive emails. I can unsubscribe at any time.</span></label>
+        <label class="consentrow"><input type="checkbox" id="paConsent"> <span id="paConsentTxt">I'm the parent or guardian and I agree to receive emails. I can unsubscribe at any time.</span></label>
         <div class="row"><button class="btn go" id="paRegSave">Save</button><button class="btn" id="paPrivacy">How we use your details</button></div>
         <p class="t-s" id="paRegStatus" role="status"></p>
         <button class="btn danger" id="paRegRemove">Remove our details from the list</button></div>
@@ -1341,10 +1341,10 @@ canvas#confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-
       <p class="t-s">Last updated: October 2026</p>
       <h3>Who we are</h3><p>Lead Quest is made by Dr. Arowolo Ayoola. It is free and has no adverts.</p>
       <h3>What stays on this device</h3><p>Your child's progress, stars, cards, badges and voice messages are saved only on this device. They leave it only if you save a backup file yourself.</p>
-      <h3>What we receive when you register</h3><p>Your child's first name or nickname, age, boy or girl, country, a player number made by the app, and simple progress counts (stories finished, stars and badges). We only receive a parent or guardian's <b>email and phone number if you tick the consent box</b>.</p>
+      <h3>What we receive when you register</h3><p>The player's first name or nickname, age, boy or girl, country, a player number made by the app, and simple progress counts (stories finished, stars and badges). We only receive an <b>email and phone number if the consent box is ticked</b>: a parent or guardian's for players under 18, or your own if you are 18 or over.</p>
       <h3>Why</h3><p>To know how many children use Lead Quest and where, to make it better, and, only with your consent, to send you occasional encouragement and news of new books.</p>
       <h3>Where it is kept</h3><p>In a private Google Sheet in Dr. Ayoola's Google account. We never sell your details or share them with advertisers.</p>
-      <h3>Children</h3><p>We ask for a parent's or guardian's email, not the child's, and only with a parent's agreement. Using Lead Quest without registering is always fine.</p>
+      <h3>Children</h3><p>For players under 18 we ask for a parent's or guardian's email, not the child's, and only with a parent's agreement. Using Lead Quest without giving an email is always fine.</p>
       <h3>Your choices</h3><p>Every email has an unsubscribe link. You can remove your details at any time in the Parent corner, under Family registration. You can also reply to any Lead Quest email to ask for a copy of your details or for them to be deleted.</p>
       <h3>Changes</h3><p>If this page changes, the date at the top will change too.</p>
     </div></div>
@@ -4795,7 +4795,7 @@ setTimeout(() => { try { if (P()) { const c = currentChapter(); if (c && c.book.
    ========================================================= */
 const REG_URL = "https://script.google.com/macros/s/AKfycbyawJFxLkPXBwe3-qKQ3N6OajQNLhZa2c2iQsGOkHi9IKfrqrB4MxKIlGUs03qYurkE/exec";
 const REG_KEY = "lq-2026";
-const APP_VER = "v48";
+const APP_VER = "v49";
 const REG_EPOCH = 2;   /* raise this to make every device send its registration again */
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
@@ -4882,6 +4882,9 @@ $("wGo").onclick = () => {
 function renderRegCard() {
   const p = P(); if (!p) return;
   $("paEmail").value = p.email || ""; $("paPhone").value = p.phone || ""; $("paConsent").checked = !!p.consent;
+  const self = (p.age || 0) >= 18;
+  $("paEmailLbl").textContent = self ? "Your email" : "Parent or guardian's email";
+  $("paConsentTxt").textContent = self ? "I agree to receive emails from Dr. Ayoola. I can unsubscribe at any time." : "I'm the parent or guardian and I agree to receive emails. I can unsubscribe at any time.";
   const waiting = (DB.regQ || []).some((q) => q.pid === p.id);
   let s;
   if (p.regOptOut) s = "Your details were removed from Dr. Ayoola's list. Tap Save to join again.";
