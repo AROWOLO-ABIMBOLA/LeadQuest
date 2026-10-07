@@ -210,6 +210,9 @@ body.royal { background: radial-gradient(circle at 50% 28%, #7A4FE0, #4B2A9E 62%
 .statrow span { background: var(--card); border: 2px solid var(--ink); border-radius: 14px; padding: 4px 10px; font-weight: 800; font-size: clamp(13px, 3.2cqmin, 17px); }
 #pfTiles { grid-template-columns: 1fr 1fr; }
 #pfTiles .tile { padding: clamp(8px, 1.6cqh, 16px); }
+#pfTiles .tile.logout { grid-column: 1 / -1; flex-direction: row; align-items: center; justify-content: center; gap: 10px; }
+#pfTiles .tile.logout .ico { font-size: clamp(22px, 5cqmin, 32px); }
+#pfTiles .tile.logout b { font-size: clamp(16px, 4cqmin, 22px); }
 @container app (max-width: 560px) {
   .profhead .avbox { --s: clamp(90px, 26cqmin, 160px); }
   #pfTiles { grid-template-columns: repeat(3, 1fr); gap: 8px; }
@@ -718,7 +721,30 @@ textarea { min-height: 70px; resize: vertical; }
 .pladd { font: 800 18px "Figtree", sans-serif; color: #FFFFFF; background: #3B2346; border: 0; border-radius: 16px; padding: 14px 26px; box-shadow: 0 5px 0 #22122B; margin-top: 4px; }
 .pladd:active { transform: translateY(4px); box-shadow: 0 1px 0 #22122B; }
 .plback { background: none; border: 0; font: 700 15px "Figtree", sans-serif; color: #7A5A6A; text-decoration: underline; text-underline-offset: 3px; padding: 6px; }
-.pladd:focus-visible, .plback:focus-visible { outline: 3px solid #E39A4A; outline-offset: 2px; }
+.pladd:focus-visible, .plback:focus-visible, .plmanage:focus-visible, .plout:focus-visible, .pldlg button:focus-visible { outline: 3px solid #E39A4A; outline-offset: 2px; }
+.plrow { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; align-items: center; }
+.plmanage { font: 700 16px "Figtree", sans-serif; color: #9A3A3A; background: #FFFFFF; border: 1.5px solid #E8C4C0; border-radius: 16px; padding: 13px 20px; margin-top: 4px; }
+.plmanage[aria-pressed="true"] { background: #3B2346; color: #FFFFFF; border-color: #3B2346; }
+.plout { font: 700 16px "Figtree", sans-serif; color: #3B2346; background: #FFF3E6; border: 1.5px solid #EBD8C6; border-radius: 999px; padding: 9px 18px; }
+#s-players.managing .pcard { border-color: #E3A39B; border-style: dashed; }
+#s-players.managing .pcard em { display: none; }
+.pcard .pdel { display: none; position: absolute; top: 8px; right: 8px; font-size: 12px; font-weight: 800; color: #FFFFFF; background: #C0392B; border-radius: 999px; padding: 3px 9px; }
+#s-players.managing .pcard .pdel { display: block; }
+.pldlg { position: absolute; inset: 0; z-index: 20; display: grid; place-items: center; padding: 16px; background: rgba(59,35,70,.45); }
+.pldlg[hidden] { display: none; }
+.pldlgbox { width: 100%; max-width: 380px; display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 22px 20px 18px; background: #FFFAF4; border-radius: 22px; color: #3B2346; font-family: "Figtree", sans-serif; text-align: center; box-shadow: 0 24px 60px -20px rgba(40,20,40,.6); }
+.pldlgbox .pav { width: 84px; aspect-ratio: 1; border-radius: 50%; padding: 4px; background: #E8C4C0; }
+.pldlgbox .pav .av { border-radius: 50%; }
+.pldlgbox h3 { font: 800 24px/1.15 "Figtree", sans-serif; margin: 0; }
+.pldlgbox p { font: 500 15px/1.45 "Figtree", sans-serif; color: #6A4A56; margin: 0; }
+.plgate { display: flex; flex-direction: column; gap: 6px; width: 100%; font: 700 15px "Figtree", sans-serif; }
+.plgate input { font: 800 22px "Figtree", sans-serif; text-align: center; padding: 8px; border: 2px solid #D9BFB0; border-radius: 14px; background: #FFFFFF; color: #3B2346; width: 100%; }
+.plgate input:focus { outline: 3px solid #E39A4A; outline-offset: 1px; }
+.pldlgbox .plhint { color: #B03A2E; font-weight: 700; min-height: 1.2em; }
+.pldlgbtns { display: flex; gap: 10px; width: 100%; }
+.pldlgbtns button { flex: 1; font: 800 17px "Figtree", sans-serif; border-radius: 14px; padding: 12px; border: 0; }
+.plkeep { background: #3B2346; color: #FFFFFF; }
+.pldel { background: #FFFFFF; color: #B03A2E; border: 2px solid #E3A39B !important; }
 .switchbtn { display: inline-flex; align-items: center; gap: 4px; color: inherit; cursor: pointer; }
 @container app (max-width: 380px) { .switchbtn span { display: none; } }
 /* ===== per-book themes ===== */
@@ -1052,11 +1078,25 @@ canvas#confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-
     <div class="landsky" aria-hidden="true"></div>
     <div class="plwrap">
       <p class="landmark" aria-hidden="true">📖</p>
-      <h2 class="pltitle">Who's playing today?</h2>
-      <p class="plsub">Tap your name to carry on. Each player keeps their own books, stars and look.</p>
+      <h2 class="pltitle" id="plTitle">Who's playing today?</h2>
+      <p class="plsub" id="plSub">Tap your name to carry on. Each player keeps their own books, stars and look.</p>
       <div class="playergrid" id="playerGrid"></div>
-      <button class="pladd" id="addChild" type="button">＋ Add a player</button>
+      <div class="plrow">
+        <button class="pladd" id="addChild" type="button">＋ Add a player</button>
+        <button class="plmanage" id="plManage" type="button">🗑 Delete a player</button>
+      </div>
+      <button class="plout" id="plOut" type="button">🚪 Log out <span id="plOutName"></span></button>
       <button class="plback" id="plBack" type="button">◀ Back to <span id="plBackName"></span></button>
+    </div>
+    <div class="pldlg" id="plDlg" hidden role="dialog" aria-modal="true" aria-labelledby="plDlgT">
+      <div class="pldlgbox">
+        <span class="pav" id="plDlgAv"></span>
+        <h3 id="plDlgT">Delete this player?</h3>
+        <p id="plDlgMsg"></p>
+        <label class="plgate"><span id="plDlgQ">Grown-up check: what is 7 × 8?</span><input id="plDlgIn" inputmode="numeric" autocomplete="off" aria-describedby="plDlgHint"></label>
+        <p class="plhint" id="plDlgHint" role="alert"></p>
+        <div class="pldlgbtns"><button type="button" class="plkeep" id="plDlgNo">Keep</button><button type="button" class="pldel" id="plDlgYes">Delete</button></div>
+      </div>
     </div>
   </section>
 
@@ -1104,9 +1144,10 @@ canvas#confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-
         <button class="btn tile" data-go="studio"><span class="ico">🎨</span><b>Dress up</b><span>Spend your coins</span></button>
         <button class="btn tile" data-go="treasure"><span class="ico">🏆</span><b>Treasure room</b><span>Crowns, stickers, certificates</span></button>
         <button class="btn tile" data-go="verses"><span class="ico">📜</span><b>My verses</b><span>Scriptures you've learned</span></button>
-        <button class="btn tile" data-go="players"><span class="ico">👪</span><b>Switch player</b><span>Change or add a player</span></button>
+        <button class="btn tile" data-go="players"><span class="ico">👪</span><b>Switch player</b><span>Change, add or delete players</span></button>
         <button class="btn tile" data-go="edit"><span class="ico">✏️</span><b>Edit profile</b><span>Name, country, email</span></button>
         <button class="btn tile" data-go="gate"><span class="ico">🔒</span><b>Parent corner</b><span>Messages and settings</span></button>
+        <button class="btn tile logout" data-go="logout"><span class="ico">🚪</span><b>Log out</b><span>Let someone else play</span></button>
       </div></div>
     </div>
   </section>
@@ -1333,7 +1374,7 @@ canvas#confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-
         <button class="btn danger" id="paRegRemove">Remove our details from the list</button></div>
       <div class="card"><h3>💾 Backup</h3><p>Progress is saved on this device. Save a backup file to keep it safe or move it to another device.</p>
         <div class="row"><button class="btn" id="paSave">💾 Save backup</button><button class="btn" id="paLoad">📂 Load backup</button></div><input type="file" id="paFile" accept=".json,application/json" hidden></div>
-      <div class="card"><h3>⚠️ Careful</h3><button class="btn danger" id="paReset">Start this player over</button><button class="btn danger" id="paRemove">Remove this player</button></div>
+      <div class="card"><h3>⚠️ Careful</h3><button class="btn danger" id="paReset">Start this player over</button><button class="btn danger" id="paRemove">Delete this player</button></div>
     </div>
   </section>
 
@@ -2791,15 +2832,57 @@ $("wGo").onclick = () => {
 };
 
 /* =========================== players =========================== */
+let plManaging = false, plDelId = null, plDelAns = 0;
 ROUTES["s-players"] = () => {
+  if (!DB.players.length) plManaging = false;
   const lk = { kid: "Playful look", teen: "Bold look", adult: "Calm look" };
-  $("playerGrid").innerHTML = DB.players.map((p) => { const sk = playerSkin(p); return `<button class="pcard sk-${sk} ${p.id === DB.current ? "now" : ""}" data-p="${p.id}"><span class="pav">${avatarSVG(p.look, { crown: p.badges.length > 0, e: "big" })}</span><b>${esc(titled(p))}</b><small>${p.age ? (p.age >= 19 ? "19+" : `Age ${p.age}`) + " · " : ""}${lk[sk]}</small><small>⭐ ${totalStars(p)} · 🪙 ${p.coins}</small>${p.id === DB.current ? '<em>Playing now</em>' : ""}</button>`; }).join("");
-  const cur = P(); $("plBack").hidden = !cur; if (cur) $("plBackName").textContent = cur.name;
+  $("playerGrid").innerHTML = DB.players.map((p) => { const sk = playerSkin(p); return `<button class="pcard sk-${sk} ${p.id === DB.current ? "now" : ""}" data-p="${p.id}" aria-label="${plManaging ? "Delete " : ""}${esc(p.name)}"><span class="pav">${avatarSVG(p.look, { crown: p.badges.length > 0, e: "big" })}</span><b>${esc(titled(p))}</b><small>${p.age ? (p.age >= 19 ? "19+" : `Age ${p.age}`) + " · " : ""}${lk[sk]}</small><small>⭐ ${totalStars(p)} · 🪙 ${p.coins}</small>${p.id === DB.current ? '<em>Playing now</em>' : ""}<span class="pdel" aria-hidden="true">🗑 Delete</span></button>`; }).join("");
+  $("s-players").classList.toggle("managing", plManaging);
+  $("plTitle").textContent = plManaging ? "Delete a player" : "Who's playing today?";
+  $("plSub").textContent = plManaging ? "Tap the player you want to delete from this device. Tap Done when you have finished." : "Tap your name to carry on. Each player keeps their own books, stars and look.";
+  $("plManage").textContent = plManaging ? "✓ Done" : "🗑 Delete a player";
+  $("plManage").setAttribute("aria-pressed", plManaging);
+  $("plManage").hidden = !DB.players.length;
+  $("addChild").hidden = plManaging;
+  const cur = P();
+  $("plBack").hidden = !cur || plManaging; if (cur) $("plBackName").textContent = cur.name;
+  $("plOut").hidden = !cur || plManaging; if (cur) $("plOutName").textContent = cur.name;
+  $("plDlg").hidden = true;
 };
-$("playerGrid").onclick = (e) => { const b = e.target.closest("[data-p]"); if (!b) return; DB.current = b.dataset.p; save(); sfx.tap(); show("home"); };
+/* log out: nobody is playing until someone taps their name */
+function logOut() { plManaging = false; DB.current = null; save(); sfx.tap(); show("players"); }
+/* delete a player and all their progress from this device (60_register also takes them off the email list) */
+function deletePlayer(id) { DB.players = DB.players.filter((x) => x.id !== id); if (DB.current === id) DB.current = null; save(); }
+function askDelete(id) {
+  const p = DB.players.find((x) => x.id === id); if (!p) return;
+  plDelId = id;
+  const a = 6 + Math.floor(Math.random() * 4), b = 6 + Math.floor(Math.random() * 4); plDelAns = a * b;
+  $("plDlgAv").innerHTML = avatarSVG(p.look, { e: "big" });
+  $("plDlgT").textContent = `Delete ${p.name}?`;
+  $("plDlgMsg").textContent = `All of ${p.name}'s books, stars, coins and stickers on this device will be gone for good. ${p.email && p.consent ? "Their email will also come off Dr. Ayoola's list." : ""}`.trim();
+  $("plDlgQ").textContent = `Grown-up check: what is ${a} × ${b}?`;
+  $("plDlgIn").value = ""; $("plDlgHint").textContent = "";
+  $("plDlgNo").textContent = `Keep ${p.name}`; $("plDlgYes").textContent = "Delete";
+  $("plDlg").hidden = false; setTimeout(() => $("plDlgIn").focus(), 60);
+}
+$("playerGrid").onclick = (e) => { const b = e.target.closest("[data-p]"); if (!b) return; sfx.tap();
+  if (plManaging) { askDelete(b.dataset.p); return; }
+  DB.current = b.dataset.p; save(); show("home"); };
+$("plManage").onclick = () => { sfx.tap(); plManaging = !plManaging; ROUTES["s-players"](); };
+$("plOut").onclick = logOut;
+$("plDlgNo").onclick = () => { $("plDlg").hidden = true; plDelId = null; };
+$("plDlgIn").onkeydown = (e) => { if (e.key === "Enter") $("plDlgYes").click(); };
+$("plDlg").onkeydown = (e) => { if (e.key === "Escape") $("plDlgNo").click(); };
+$("plDlgYes").onclick = () => {
+  if (+$("plDlgIn").value !== plDelAns) { $("plDlgHint").textContent = "Not quite. Please ask a grown-up."; sfx.bad(); return; }
+  const p = DB.players.find((x) => x.id === plDelId), nm = p ? p.name : "Player";
+  deletePlayer(plDelId); plDelId = null;
+  if (!DB.players.length) { plManaging = false; toast(`${nm} was deleted.`); openWelcome(false); return; }
+  ROUTES["s-players"](); toast(`${nm} was deleted.`);
+};
 $("addChild").onclick = () => openWelcome(false);
 $("plBack").onclick = () => show("home");
-$("hSwitch").onclick = () => { sfx.tap(); show("players"); };
+$("hSwitch").onclick = () => { sfx.tap(); plManaging = false; show("players"); };
 
 /* =========================== home =========================== */
 function nextThing(ch = currentChapter()) {
@@ -2887,7 +2970,7 @@ ROUTES["s-profile"] = () => {
 };
 $("pfStyle").onclick = (e) => { const b = e.target.closest("[data-sk]"); if (!b) return; sfx.tap(); const p = P(); p.skin = b.dataset.sk; save(); applySkin(CUR); ROUTES["s-profile"](); };
 $("pfTiles").onclick = (e) => { const b = e.target.closest("[data-go]"); if (!b) return; sfx.tap(); const g = b.dataset.go;
-  if (g === "edit") openWelcome(true); else if (g === "gate") openGate(); else show(g); };
+  if (g === "edit") openWelcome(true); else if (g === "gate") openGate(); else if (g === "logout") logOut(); else { if (g === "players") plManaging = false; show(g); } };
 
 /* =========================== bookshelf =========================== */
 ROUTES["s-book"] = () => {
@@ -3309,7 +3392,7 @@ $("paFile").onchange = () => { const f = $("paFile").files[0]; if (!f) return; c
   fr.onload = () => { try { const d = JSON.parse(fr.result); if (!Array.isArray(d.players)) throw 0; if (!confirm("Replace everything on this device with this backup?")) return; DB = Object.assign({ v: 1, players: [], current: null, theme: "auto", sound: true }, d); save(); applyTheme(); toast("Backup loaded"); show(P() ? "home" : "players"); } catch (e) { toast("That file isn't a Lead Quest backup."); } };
   fr.readAsText(f); $("paFile").value = ""; };
 $("paReset").onclick = () => { const p = P(); if (!confirm(`Start ${p.name}'s journey over? Stars, coins, stickers and certificates will be cleared.`)) return; Object.assign(p, { coins: 20, owned: [], prog: {}, stickers: [], badges: [], certs: {}, verses: [] }); save(); toast("Fresh start!"); show("home"); };
-$("paRemove").onclick = () => { const p = P(); if (!confirm(`Remove ${p.name} from this device?`)) return; DB.players = DB.players.filter((x) => x.id !== p.id); DB.current = DB.players[0] ? DB.players[0].id : null; save(); if (DB.current) show("players"); else openWelcome(false); };
+$("paRemove").onclick = () => { const p = P(); if (!confirm(`Delete ${p.name} from this device? All of ${p.name}'s books, stars and stickers here will be gone for good.`)) return; deletePlayer(p.id); toast(`${p.name} was deleted.`); if (DB.players.length) show("players"); else openWelcome(false); };
 
 /* parent message pop-up */
 function playMessage(key) {
@@ -4806,7 +4889,7 @@ setTimeout(() => { try { if (P()) { const c = currentChapter(); if (c && c.book.
    ========================================================= */
 const REG_URL = "https://script.google.com/macros/s/AKfycbx4TXkYRpCfRR7Vjndz0JBweQOVCyhHOVDrNeFvMZMGgjidFOPD2KOfC9f8sTdWzSNCtA/exec";
 const REG_KEY = "lq-2026";
-const APP_VER = "v51";
+const APP_VER = "v52";
 const REG_EPOCH = 3;   /* raise this to make every device send its registration again (3: new sheet, Oct 2026) */
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
@@ -4926,6 +5009,16 @@ $("paRegRemove").onclick = () => {
   DB.regQ.push({ action: "remove", pid: p.id, at: Date.now() });
   Object.assign(p, { email: "", phone: "", consent: false, regOptOut: true });
   _saveBeforeReg(); regFlushSoon(); toast("Removed. Thank you for letting us know."); renderRegCard();
+};
+
+/* ---------- deleting a player also takes them off the list in the sheet ---------- */
+const _deletePlayerReg = deletePlayer;
+deletePlayer = function (id) {
+  const p = DB.players.find((x) => x.id === id);
+  const known = !!(p && !p.regOptOut && (p.regAt || p.regId));
+  DB.regQ = (DB.regQ || []).filter((q) => q.pid !== id);
+  if (known) DB.regQ.push({ action: "remove", pid: id, at: Date.now() });
+  _deletePlayerReg(id);
 };
 
 /* ---------- privacy screen ---------- */
